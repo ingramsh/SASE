@@ -1,0 +1,42 @@
+﻿@model MvcSASE.Models.SASE
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SASE</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.userEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.userEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.storageAccount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.storageAccount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.storageKey)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.storageKey)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
