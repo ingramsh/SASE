@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="SASEBlob.cs" />
     <Compile Include="SASEQueue.cs" />
-    <Compile Include="SASEService.cs" />
+    <Compile Include="SASEAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
