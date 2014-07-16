@@ -13,17 +13,17 @@ namespace ConsoleSASE
         {
             string name = "daowna";
             string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";
-            SASEService sase = new SASEService(name, key);
+            SASEAccountService sase = new SASEAccountService(name, key);
 
             Console.WriteLine("The blob containers on this storage account are:");           
-            foreach (string container in sase.BlobContainerNames())
+            foreach (string container in sase.SASEBlobContainerNames())
             {
                 Console.WriteLine(container);
             }
 
             Console.WriteLine("");
             Console.WriteLine("The queue names on this storage account are:");
-            foreach (string container in sase.QueueNames())
+            foreach (string container in sase.SASEQueueNames())
             {
                 Console.WriteLine(container);
             }
