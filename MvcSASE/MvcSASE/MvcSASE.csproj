@@ -225,6 +225,8 @@
     <Content Include="Views\SASEs\Details.cshtml" />
     <Content Include="Views\SASEs\Edit.cshtml" />
     <Content Include="Views\SASEs\Index.cshtml" />
+    <Content Include="Views\GridPage.cshtml" />
+    <Content Include="Views\SASEs\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
