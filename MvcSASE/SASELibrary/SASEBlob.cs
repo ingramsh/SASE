@@ -78,5 +78,32 @@ namespace SASELibrary
 
             blob.UploadFromFile(filepath, System.IO.FileMode.Open);
         }
+
+        // Retrieve a blob item's byte code
+        public byte[] GetBlobBytes(string container, string item)
+        {
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+            blob.FetchAttributes();
+
+            long fileByteLength = blob.Properties.Length;
+            byte[] fileContent = new byte[fileByteLength];
+            
+            for (int i = 0; i < fileByteLength; i++)
+                fileContent[i] = 0x20;
+
+            blob.DownloadToByteArray(fileContent, 0);
+
+            return fileContent;
+        }
+
+        // Download a blob item to specified file path
+        public void DownloadBlobItem(string container, string item, string filepath)
+        {
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+
+            blob.DownloadToFile(filepath, System.IO.FileMode.CreateNew);
+        }
     }
 }
