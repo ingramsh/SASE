@@ -27,16 +27,28 @@ namespace ConsoleSASE
                 Console.WriteLine("The container name given either already exists or has inappropriate characters: " + testCreateName + '\n');
 
             // Attempt to upload a file from 'uploadPath' to blob cotainer 'uploadContainer'
-            string uploadPath = @"C:\Users\Administrator\Desktop\tunes.txt";
+            string uploadPath = @"C:\Users\Administrator\Desktop\Cloud.png";
             string uploadContainer = "createthis";
             Console.WriteLine("Attempting to upload file from " + uploadPath + "\nTo container: " + uploadContainer);
             if (sase.SASEUploadBlockBlob(uploadContainer, uploadPath))
                 Console.WriteLine("Uploading succeeded!\n");
             else
-                Console.WriteLine("Uploading failed...\n");
+                Console.WriteLine("Uploading failed...\n");       
+
+            // Attempt to download a file 'blobItem' from 'containerName' to 'downloadPath'
+            string blobItem = "Cloud.png";
+            string containerName = "createthis";
+            string downloadPath = @"C:\Users\Administrator\Desktop\Downloads\Cloud.png";
+
+            Console.WriteLine("Attempting to download blob item: " + blobItem + "\nFrom container: " + containerName + "\nTo file path: " + downloadPath);
+            if (sase.SASEDownloadBlobBlock(containerName, blobItem, downloadPath))
+                Console.WriteLine("Success!\n");
+            else
+                Console.WriteLine("Failure.\n");
+            ********************************************/
 
             // List all blob containers by name and their blob items
-            Console.WriteLine("The blob containers on this storage account are:\n");
+            Console.WriteLine("The blob containers and their contents on this storage account are:\n");
             foreach (string container in sase.SASEBlobContainerNames())
             {
                 Console.WriteLine(container);
@@ -54,37 +66,36 @@ namespace ConsoleSASE
 
                 Console.WriteLine("");
             }
-            ********************************************/
-            //^^Blobs^^===============================================================================================================vvQueuesvv//
 
+            //^^Blobs^^===============================================================================================================vvQueuesvv//
+            
             string queueName = "sase-test-queue";
             string message = "this is a test MeSsAgE for the SASE Service queue";
+
             /********************************************
             // Create a new storage queue titeled with 'queueName'
             string queueName = "sase-test-queue";
             if (sase.SASECreateQueue(queueName))
                 Console.WriteLine("Created a new queue named: " + queueName);
             else
-                Console.WriteLine("Failed to create a new queue named: " + queueName);
+                Console.WriteLine("Failed to create a new queue named: " + queueName);            
             ********************************************/
 
-            
             // Enqueue a 'message' to 'queueName'
-            Console.WriteLine("Attempting to enqueue the message: " + message + "\nTo queue: " + queueName);
+            Console.WriteLine("\n\nAttempting to enqueue the message: " + message + "\nTo queue: " + queueName);
             if (sase.SASEEnqueueMessage(queueName, message))
                 Console.WriteLine("Succeeded!\n");
             else
                 Console.WriteLine("Failed..\n");
             
-
-            /*
             // Peek the first message of 'queueName'
             List<string> peekMessage = sase.SASEPeekMessage(queueName);
+            
 
             if (peekMessage.Count() > 0)
                 Console.WriteLine("Peek Message: " + peekMessage.ElementAt(0));
             if (peekMessage.Count() > 1)
-                Console.WriteLine("Dequeue Count: \t" + peekMessage.ElementAt(1));
+                Console.WriteLine("Dequeue Count: \t\t" + peekMessage.ElementAt(1));
             if (peekMessage.Count() > 2)
                 Console.WriteLine("Insertion Time: \t" + peekMessage.ElementAt(2));
             if (peekMessage.Count() > 3)
@@ -92,7 +103,7 @@ namespace ConsoleSASE
             if (peekMessage.Count() > 4)
                 Console.WriteLine("Next Visible In: \t" + peekMessage.ElementAt(4));
             Console.WriteLine('\n');
-            */
+            
 
             // Dequeue the first message of 'queueName'
             string dequeueMessage = null;
@@ -113,7 +124,7 @@ namespace ConsoleSASE
             }
 
             // End of program.  Keeps console window open.
-            Console.WriteLine("\n\nPress 'Enter' to exit..");
+            Console.WriteLine("\n\nThe end.  Press 'Enter' to exit..");
             Console.ReadLine();
         }
     }

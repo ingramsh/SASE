@@ -67,13 +67,78 @@ namespace SASELibrary
                 return false;
             }
 
-            filecheck = Path.GetFileNameWithoutExtension(filepath);
+            filecheck = Path.GetFileName(filepath);
             if (filecheck == "")
             {
                 //TODO:  Create exception for submitting a filepath to a directory instead of a file
                 return false;
+            }            
+            if (BlobItemExists(container, filecheck))
+            {
+                //TODO:  Create exception for submitting a file name that already exists in the given container
+                return false;
             }
 
+            blob.UploadBlockBlob(container, filecheck, filepath);
+
+            return true;
+        }
+        public bool SASEDownloadBlobBlock(string container, string item, string filepath)
+        {
+            string filecheck = Path.GetDirectoryName(filepath);
+            if (filecheck == "")
+            {
+                //TODO:  Create exception for submitting an invalid filepath
+                return false;
+            }
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return false;
+            }
+            /*
+            if (!BlobItemExists(container, item))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return false;
+            }
+            */
+
+            blob.DownloadBlobItem(container, item, filepath);
+
+            return true;
+        }
+        public byte[] SASEBlobBytes(string container, string item)
+        {
+            byte[] byteArray;
+
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return byteArray = null;
+            }
+            /*
+            if (!BlobItemExists(container, item))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
+            }
+            */
+
+            return byteArray = blob.GetBlobBytes(container, item);
+        }
+        private bool ContainerNameExists(string name)
+        {
+            foreach (string container in blob.GetContainerNames())
+                if (container == name)
+                    return true;
+
+            return false;
+        }
+        private bool BlobItemExists(string container, string item)
+        {
             foreach (string blobName in blob.GetBlobItemNames(container))
             {
                 string itemName = "";
@@ -83,21 +148,13 @@ namespace SASELibrary
                 if (slash2 > 1)
                     itemName = blobName.Remove(slash1, slash2 + 1);
 
-                if (itemName == filecheck)
-                {
-                    //TODO:  Create exception for submitting a file name that already exists in the given container
-                    return false;
-                }
-            }
+                for (int i = 0; i < blobName.Count(); )
 
-            blob.UploadBlockBlob(container, filecheck, filepath);
-            return true;
-        }
-        private bool ContainerNameExists(string name)
-        {
-            foreach (string container in blob.GetContainerNames())
-                if (container == name)
-                    return true;
+                    if (itemName == item)
+                    {
+                        return true;
+                    }
+            }
 
             return false;
         }
