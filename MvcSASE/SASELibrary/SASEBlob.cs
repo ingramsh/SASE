@@ -79,7 +79,7 @@ namespace SASELibrary
             blob.UploadFromFile(filepath, System.IO.FileMode.Open);
         }
 
-        // Retrieve a blob item's info
+        // Retrieve a blob item's byte code
         public byte[] GetBlobBytes(string container, string item)
         {
             blobContainer = blobClient.GetContainerReference(container);
