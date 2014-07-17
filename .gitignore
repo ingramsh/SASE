@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+#scripts we don't need
+_references.js
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
