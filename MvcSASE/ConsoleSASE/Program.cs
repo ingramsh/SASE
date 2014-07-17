@@ -68,16 +68,41 @@ namespace ConsoleSASE
                 Console.WriteLine("Failed to create a new queue named: " + queueName);
             ********************************************/
 
-            /*
+            
             // Enqueue a 'message' to 'queueName'
             Console.WriteLine("Attempting to enqueue the message: " + message + "\nTo queue: " + queueName);
             if (sase.SASEEnqueueMessage(queueName, message))
-                Console.WriteLine("Succeeded!");
+                Console.WriteLine("Succeeded!\n");
             else
-                Console.WriteLine("Failed..");
+                Console.WriteLine("Failed..\n");
+            
+
+            /*
+            // Peek the first message of 'queueName'
+            List<string> peekMessage = sase.SASEPeekMessage(queueName);
+
+            if (peekMessage.Count() > 0)
+                Console.WriteLine("Peek Message: " + peekMessage.ElementAt(0));
+            if (peekMessage.Count() > 1)
+                Console.WriteLine("Dequeue Count: \t" + peekMessage.ElementAt(1));
+            if (peekMessage.Count() > 2)
+                Console.WriteLine("Insertion Time: \t" + peekMessage.ElementAt(2));
+            if (peekMessage.Count() > 3)
+                Console.WriteLine("Expiration Time: \t" + peekMessage.ElementAt(3));
+            if (peekMessage.Count() > 4)
+                Console.WriteLine("Next Visible In: \t" + peekMessage.ElementAt(4));
+            Console.WriteLine('\n');
             */
 
+            // Dequeue the first message of 'queueName'
+            string dequeueMessage = null;
+            Console.WriteLine("Attempting to dequeue message from: " + queueName);
+            dequeueMessage = sase.SASEDequeueMessage(queueName);
 
+            if (dequeueMessage == null)
+                Console.WriteLine("Failed: " + dequeueMessage);
+            else
+                Console.WriteLine("Succeeded: " + dequeueMessage);
 
             // List all storage queues by name and their approximate message count
             Console.WriteLine("\nThe queue names on this storage account are:");

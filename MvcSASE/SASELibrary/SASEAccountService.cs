@@ -142,19 +142,43 @@ namespace SASELibrary
 
             return queue.EnqueueMessage(name, message);
         }
-        public string SASEDequeueMessage(string queue)
-        {
-            string message = null;
-            
-            //TODO: remove 'message' from front of 'queue' and return it
-            return message;
-        }
-        public string SASEPeekMessage(string queue)
+        public string SASEDequeueMessage(string name)
         {
             string message = null;
 
-            //TODO: peek 'message' from front of 'queue' and return it
+            if (!QueueNameExists(name))
+            {
+                //TODO:  Create exception for attempting to dequeue a queue that does not exist
+                return message;
+            }
+            if (queue.GetMessageCount(name) == 0)
+            {
+                //TODO:  Create exception for attempting to dequeue and empty queue
+                return message;
+            }
+
+            message = queue.DequeueMessage(name);
+
             return message;
+        }
+        public List<string> SASEPeekMessage(string name)
+        {
+            List<string> peek = new List<string>();
+
+            if (!QueueNameExists(name))
+            {
+                //TODO:  Create exception for attempting to peek a queue that does not exist
+                return peek;
+            }
+            if (queue.GetMessageCount(name) == 0)
+            {
+                //TODO:  Create exception for attempting to peek and empty queue
+                return peek;
+            }
+
+            peek = queue.PeekMessage(name);
+
+            return peek;
         }
         private bool QueueNameExists(string name)
         {

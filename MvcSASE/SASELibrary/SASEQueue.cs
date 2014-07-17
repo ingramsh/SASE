@@ -68,7 +68,7 @@ namespace SASELibrary
             return created;
         }
 
-        // Enqueue a message to 'queue'
+        // Enqueue a message to queue
         public bool EnqueueMessage(string name, string message)
         {
             CloudQueueMessage queueMessage = new CloudQueueMessage(message);
@@ -86,10 +86,35 @@ namespace SASELibrary
             return true;
         }
 
-        // Dequeue a message from the front of 'queue'
-        public string DequeueMessage(string name, string message)
+        // Dequeue a message from the front of queue
+        public string DequeueMessage(string name)
         {
-            return "happy";
+            string message;
+
+            cloudQueue = queueClient.GetQueueReference(name);
+            CloudQueueMessage getMessage = cloudQueue.GetMessage();
+
+            message = getMessage.AsString;
+            cloudQueue.DeleteMessage(getMessage);
+            
+            return message;
+        }
+
+        // Peek a message from the front of queue
+        public List<string> PeekMessage(string name)
+        {
+            List<string> peek = new List<string>();
+
+            cloudQueue = queueClient.GetQueueReference(name);
+            CloudQueueMessage peekMessage = cloudQueue.PeekMessage();
+
+            peek.Add(peekMessage.AsString);
+            peek.Add(peekMessage.DequeueCount.ToString());
+            peek.Add(peekMessage.InsertionTime.ToString());
+            peek.Add(peekMessage.ExpirationTime.ToString());
+            peek.Add(peekMessage.NextVisibleTime.ToString());
+
+            return peek;
         }
     }
 }
