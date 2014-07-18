@@ -26,10 +26,12 @@ namespace SASELibrary
             queue = new SASEQueue(account);
         }
 
+        #region SASE BLOB OPPs
         //---SASE Blob Operations---//
         public List<string> SASEBlobContainerNames()
         {
-            return blob.GetContainerNames();
+            throw new NotImplementedException();
+            //return blob.GetContainerNames();
         }
         public List<string> SASEBlobItemNames(string container)
         {            
@@ -158,7 +160,9 @@ namespace SASELibrary
 
             return false;
         }
+        #endregion
 
+        #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
         public List<string> SASEQueueNames()
         {
@@ -245,5 +249,6 @@ namespace SASELibrary
 
             return false;
         }
+        #endregion
     }
 }
