@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
-using MvcSASE.Models;
+using MvcSASE2.Models;
 
-namespace MvcSASE.Controllers
+namespace MvcSASE2.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -26,7 +26,6 @@ namespace MvcSASE.Controllers
         public AccountController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
-            
         }
 
         public ApplicationUserManager UserManager {
@@ -62,7 +61,7 @@ namespace MvcSASE.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal("/SASEs");
+                    return RedirectToLocal(returnUrl);
                 }
                 else
                 {

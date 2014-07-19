@@ -25,16 +25,37 @@ namespace SASELibrary
             blob = new SASEBlob(account);
             queue = new SASEQueue(account);
         }
+        public SASEAccountService() { }
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
         public List<string> SASEBlobContainerNames()
         {
-            throw new NotImplementedException();
-            //return blob.GetContainerNames();
+            return blob.GetContainerNames();
+        }
+        public int SASEContainerCount()
+        {
+            return this.SASEBlobContainerNames().Count;
         }
         public List<string> SASEBlobItemNames(string container)
-        {            
+        {
+            List<string> blobNames = new List<String>();
+            foreach (string item in blob.GetBlobItemNames(container))
+            {
+                string itemName = "";
+                int slash1 = item.IndexOf("/");
+                int slash2 = item.IndexOf("/", slash1 + 1);
+
+                if (slash2 > 1)
+                    itemName = item.Remove(slash1, slash2 + 1);
+
+                blobNames.Add(item);
+            }
+
+            return blobNames;
+        }
+        public List<string> SASEBlobItems(string container)
+        {
             return blob.GetBlobItemNames(container);
         }
         public bool SASECreateContainer(string name)
@@ -167,6 +188,10 @@ namespace SASELibrary
         public List<string> SASEQueueNames()
         {
             return queue.GetQueueNames();
+        }
+        public int SASEQueueCount()
+        {
+            return this.SASEQueueNames().Count;
         }
         public int SASEQueueMessageCount(string name)
         {

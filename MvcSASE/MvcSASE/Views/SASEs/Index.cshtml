@@ -43,3 +43,13 @@
 }
 
 </table>
+<p>
+    <h4>Storage Explorer</h4>
+    @foreach (var item in Model)
+    {
+            @Html.DisplayFor(modelItem => item.storageAccount)
+            @Html.ActionLink(" Explore", "Index", "SASEExplorer", new { id = item.ID }, null)
+            <p /><p />
+        
+    }
+
