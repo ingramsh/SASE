@@ -335,17 +335,23 @@ namespace SASELibrary
             if (!QueueNameExists(name))
             {
                 //TODO:  Create exception for attempting to peek a queue that does not exist
+                for (int i = 0; i < 5; i++)
+                    peek.Add("");
+
                 return peek;
             }
             if (queue.GetMessageCount(name) == 0)
             {
                 //TODO:  Create exception for attempting to peek and empty queue
+                for (int i = 0; i < 5; i++)
+                    peek.Add("");
+
                 return peek;
             }
 
-            peek = queue.PeekMessage(name);
+            return queue.PeekMessage(name);
 
-            return peek;
+            //return peek;
         }
         private bool QueueNameExists(string name)
         {

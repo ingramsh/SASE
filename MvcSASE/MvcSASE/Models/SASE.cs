@@ -20,6 +20,8 @@ namespace MvcSASE.Models
         [NotMapped]
         public List<string> blobInfo { get; set; }
         [NotMapped]
+        public string queueName { get; set; }
+        [NotMapped]
         public SASEAccountService service
         {
             get

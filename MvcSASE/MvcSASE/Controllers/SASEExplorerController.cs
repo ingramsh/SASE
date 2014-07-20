@@ -30,24 +30,88 @@ namespace MvcSASE.Controllers
 
             return View(s);
         }
-        [HttpGet]
-        public ActionResult CreateContainer(int? ID)
+
+        [HttpPost]
+        public ActionResult CreateContainer(string container, int? saseid)
         {
-            if (ID == null)
+            if (saseid == null)
                 CheckLogin();
 
-            s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
-            s.passID = ID;
+            s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
+            s.passID = saseid;
+            CheckLogin();
+
+            if (s.service.SASECreateContainer(container))
+                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+            else
+            {
+                //TODO:  Container not created handling
+                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateQueue(string queue, int? saseid)
+        {
+            if (saseid == null)
+                CheckLogin();
+
+            s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
+            s.passID = saseid;
+            CheckLogin();
+
+            if (s.service.SASECreateQueue(queue))
+                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+            else
+            {
+                //TODO:  Container not created handling
+                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+            }
+        }
+
+        public ActionResult Queue(string queuename, int? saseid)
+        {
+            if (saseid == null)
+                CheckLogin();
+
+            s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
+            s.passID = saseid;
+            s.queueName = queuename;
             CheckLogin();
 
             return View(s);
         }
 
-        [HttpGet]
-        public ActionResult CreateQueue()
+        [HttpPost]
+        public ActionResult Dequeue(string queuename, int? saseid)
         {
-            //return View(explorer);
-            return View(s);
+            if (saseid == null)
+                CheckLogin();
+
+            s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
+            s.passID = saseid;
+            s.queueName = queuename;
+            CheckLogin();
+
+            s.service.SASEDequeueMessage(queuename);
+
+            return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
+        }
+
+        [HttpPost]
+        public ActionResult Enqueue(string message, string queuename, int? saseid)
+        {
+            if (saseid == null)
+                CheckLogin();
+
+            s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
+            s.passID = saseid;
+            s.queueName = queuename;
+            CheckLogin();
+
+            s.service.SASEEnqueueMessage(queuename, message);
+
+            return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
         }
         
         private ActionResult RedirectToLocal(string returnUrl)

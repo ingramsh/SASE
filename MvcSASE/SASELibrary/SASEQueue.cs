@@ -109,7 +109,12 @@ namespace SASELibrary
             CloudQueueMessage peekMessage = cloudQueue.PeekMessage();
 
             peek.Add(peekMessage.AsString);
-            peek.Add(peekMessage.DequeueCount.ToString());
+
+            if (peekMessage.DequeueCount.ToString() == "")
+                peek.Add("0");
+            else
+                peek.Add(peekMessage.DequeueCount.ToString());
+
             peek.Add(peekMessage.InsertionTime.ToString());
             peek.Add(peekMessage.ExpirationTime.ToString());
             peek.Add(peekMessage.NextVisibleTime.ToString());

@@ -5,11 +5,8 @@
 }
 
 <h2>Azure Storage Explorer</h2>
-<p />
+<hr />
 <h4>Blobs Containers:</h4>
-@Html.ActionLink("Create", "CreateContainer", Model.passID)
-@(" a new Container.")
-<hr>
 <form>    
     @for (int i = 0; i < Model.service.SASEBlobContainerNames().Count(); i++)
     {
@@ -20,18 +17,37 @@
         @(")  ");
     }
 </form>
+<p />
+@using (Html.BeginForm("CreateContainer",
+                        "SASEExplorer",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="container">Create new container: </label>
+    <input type="text" name="container" id="container" /><br><br>
+    <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
+    <input type="submit" value="Create Container" />
+}
 <hr>
 <h4>Queues: </h4>
-@Html.ActionLink("Create", "CreateQueue")
-@(" a new Queue.")
-<hr>
 <form>
     @for (int i = 0; i < Model.service.SASEQueueCount(); i++)
     {
         <p />
-        @Html.ActionLink(Model.service.SASEQueueNames().ElementAt(i), "Queue", "SASEExplorer", new { queueName = Model.service.SASEQueueNames()[i] })
-        @(" (");
-        @Model.service.SASEQueueMessageCount(Model.service.SASEQueueNames().ElementAt(i));
-        @(")  ");
+        <a href="/SASEExplorer/Queue?queuename=@Model.service.SASEQueueNames()[i]&saseid=@Model.passID">@Model.service.SASEQueueNames()[i]</a>
+            @(" (");
+            @Model.service.SASEQueueMessageCount(Model.service.SASEQueueNames().ElementAt(i));
+            @(")  ");
     }
 </form>
+<p />
+@using (Html.BeginForm("CreateQueue",
+                        "SASEExplorer",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="queue">Create new queue: </label>
+    <input type="text" name="queue" id="queue" /><br><br>
+    <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
+    <input type="submit" value="Create Queue" />
+}

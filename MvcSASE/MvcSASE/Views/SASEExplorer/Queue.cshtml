@@ -1,8 +1,39 @@
-﻿@model MvcSASE.Models.SASEExplorer
+﻿@model MvcSASE.Models.SASE
 
 @{
     ViewBag.Title = "Queue";
 }
 
-<h2>Queue Messages</h2>
-
+<h2>Queue: @Model.queueName</h2>
+<p />
+<h4>Queue Message Count: @Model.service.SASEQueueMessageCount(Model.queueName)</h4>
+<p />
+Front Message: "@Model.service.SASEPeekMessage(Model.queueName)[0]"
+<p />
+Dequeue Count: @Model.service.SASEPeekMessage(Model.queueName)[1] 
+<p />
+Inserted: @Model.service.SASEPeekMessage(Model.queueName)[2] | Expires: @Model.service.SASEPeekMessage(Model.queueName)[3] | 
+    Next Visible: @Model.service.SASEPeekMessage(Model.queueName)[4]
+<hr />
+@using (Html.BeginForm("Dequeue",
+                        "SASEExplorer",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="submit">Get next message:</label>
+    <input type="hidden" name="queuename" id="queuename" value="@Model.queueName" />
+    <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
+    <input type="submit" name="submit" id="submit" value="Dequeue Message" />
+}
+<hr />
+@using (Html.BeginForm("Enqueue",
+                        "SASEExplorer",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="Message">Add new message:</label>
+    <input type="text" name="message" id="message" /><br /><br />
+    <input type="hidden" name="queuename" id="queuename" value="@Model.queueName" />
+    <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
+    <input type="submit" name="submit" id="submit" value="Enqueue Message" />
+}

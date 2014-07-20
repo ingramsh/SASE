@@ -232,7 +232,6 @@
     <Content Include="Views\SASEExplorer\Index.cshtml" />
     <Content Include="Views\SASEExplorer\CreateContainer.cshtml" />
     <Content Include="Views\SASEExplorer\CreateQueue.cshtml" />
-    <Content Include="Views\SASEExplorer\Container.cshtml" />
     <Content Include="Views\SASEExplorer\Queue.cshtml" />
     <Content Include="Views\Blob\Index.cshtml" />
     <Content Include="Views\Blob\Upload.cshtml" />

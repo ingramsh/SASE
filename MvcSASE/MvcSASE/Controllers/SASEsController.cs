@@ -19,6 +19,9 @@ namespace MvcSASE.Controllers
         // GET: SASEs
         public ActionResult Index()
         {
+            if (currentUser == "" || currentUser == null)
+                return RedirectToAction("Login", "Account");
+
             var userEntries = from m in db.Sase
                               select m;
             userEntries = userEntries.Where(s => s.userEmail.Contains(currentUser));
@@ -119,6 +122,18 @@ namespace MvcSASE.Controllers
             db.Sase.Remove(sASE);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)
