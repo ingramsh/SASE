@@ -49,7 +49,7 @@ namespace SASELibrary
                 if (slash2 > 1)
                     itemName = item.Remove(slash1, slash2 + 1);
 
-                blobNames.Add(item);
+                blobNames.Add(itemName);
             }
 
             return blobNames;
@@ -95,14 +95,57 @@ namespace SASELibrary
             {
                 //TODO:  Create exception for submitting a filepath to a directory instead of a file
                 return false;
-            }            
+            }
+            /*
             if (BlobItemExists(container, filecheck))
             {
-                //TODO:  Create exception for submitting a file name that already exists in the given container
-                return false;
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
             }
+            */
 
             blob.UploadBlockBlob(container, filecheck, filepath);
+
+            return true;
+        }
+        public bool SASEUploadBlockBlobBytes(string container, string name, byte[] file)
+        {
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return false;
+            }
+            /*
+            if (!BlobItemExists(container, name))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
+            }
+            */
+
+            blob.UploadBlockBlobBytes(container, name, file);
+
+            return true;
+        }
+        public bool SASEUploadBlockBlobStream(string container, string name, Stream file)
+        {
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return false;
+            }
+            /*
+            if (!BlobItemExists(container, name))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
+            }
+            */
+
+            blob.UploadBlockBlobStream(container, name, file);
 
             return true;
         }
@@ -132,7 +175,25 @@ namespace SASELibrary
 
             return true;
         }
-        public byte[] SASEBlobBytes(string container, string item)
+        public Stream SASEDownloadBlobStream(string container, string item)
+        {
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return null;
+            }
+            /*
+            if (!BlobItemExists(container, item))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
+            }
+            */
+
+            return blob.DownloadBlobStream(container, item);
+        }
+        public byte[] SASEDownloadBlobBytes(string container, string item)
         {
             byte[] byteArray;
 
@@ -152,6 +213,24 @@ namespace SASELibrary
 
             return byteArray = blob.GetBlobBytes(container, item);
         }
+        public List<string> SASEBlobInfo(string container, string item)
+        {
+            if (!ContainerNameExists(container))
+            {
+                //TODO:  Create exception for submitting a non-existent container
+                return null;
+            }
+            /*
+            if (!BlobItemExists(container, item))
+            {
+                //TODO:  Create exception for submitting a non-existent blob item
+                Console.WriteLine("INVALID BLOB ITEM");
+                return byteArray = null;
+            }
+            */
+
+            return blob.BlobInfo(container, item);
+        }
         private bool ContainerNameExists(string name)
         {
             foreach (string container in blob.GetContainerNames())
@@ -164,7 +243,7 @@ namespace SASELibrary
         {
             foreach (string blobName in blob.GetBlobItemNames(container))
             {
-                string itemName = "";
+                /*string itemName = "";
                 int slash1 = blobName.IndexOf("/");
                 int slash2 = blobName.IndexOf("/", slash1 + 1);
 
@@ -176,7 +255,9 @@ namespace SASELibrary
                     if (itemName == item)
                     {
                         return true;
-                    }
+                    }*/
+                if (blobName == item)
+                    return true;
             }
 
             return false;

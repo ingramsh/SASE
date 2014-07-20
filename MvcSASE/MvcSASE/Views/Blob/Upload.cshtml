@@ -1,0 +1,18 @@
+﻿@model MvcSASE.Models.SASE
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+<h2>Upload File to Blob Storage</h2>
+@using (Html.BeginForm("Upload",
+                        "Blob",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="file">Upload Blob Item:</label>
+    <input type="file" name="file" id="file" /><br><br>
+    <input type="submit" value="Upload File" />
+    <br><br>
+    @ViewBag.Message
+}

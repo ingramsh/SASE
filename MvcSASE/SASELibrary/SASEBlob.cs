@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SASELibrary
 {
@@ -79,6 +80,24 @@ namespace SASELibrary
             blob.UploadFromFile(filepath, System.IO.FileMode.Open);
         }
 
+        // Create a new blob block from a byte array
+        public void UploadBlockBlobBytes(string container, string name, byte[] file)
+        {
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
+
+            blob.UploadFromByteArray(file, 0, file.Count());
+        }
+
+        // Create a new blob block from a file stream
+        public void UploadBlockBlobStream(string container, string name, Stream file)
+        {
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
+
+            blob.UploadFromStream(file);
+        }
+
         // Retrieve a blob item's byte code
         public byte[] GetBlobBytes(string container, string item)
         {
@@ -104,6 +123,36 @@ namespace SASELibrary
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
 
             blob.DownloadToFile(filepath, System.IO.FileMode.CreateNew);
+        }
+
+        // Download a blob item as a Stream
+        public Stream DownloadBlobStream(string container, string item)
+        {
+            Stream s = new MemoryStream();
+
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+
+            blob.DownloadToStream(s);
+            s.Position = 0;
+
+            return s;
+        }
+
+        public List<string> BlobInfo(string container, string item)
+        {
+            List<string> attributes = new List<string>();
+            blobContainer = blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+
+            blob.FetchAttributes();
+
+            attributes.Add(blob.Properties.BlobType.ToString());
+            attributes.Add(blob.Properties.Length.ToString());
+            attributes.Add(blob.Properties.LastModified.ToString());
+            attributes.Add(blob.Uri.ToString());
+
+            return attributes;
         }
     }
 }

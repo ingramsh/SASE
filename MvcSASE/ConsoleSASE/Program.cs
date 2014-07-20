@@ -52,7 +52,7 @@ namespace ConsoleSASE
             foreach (string container in sase.SASEBlobContainerNames())
             {
                 Console.WriteLine(container);
-                foreach (string item in sase.SASEBlobItemNames(container))
+                /*foreach (string item in sase.SASEBlobItemNames(container))
                 {
                     string itemName = "";
                     int slash1 = item.IndexOf("/");
@@ -62,7 +62,9 @@ namespace ConsoleSASE
                         itemName = item.Remove(slash1, slash2 + 1);
 
                     Console.WriteLine('\t' + itemName);                    
-                }
+                }*/
+                foreach (string item in sase.SASEBlobItemNames(container))
+                    Console.WriteLine('\t' + item);
 
                 Console.WriteLine("");
             }
