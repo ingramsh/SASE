@@ -17,5 +17,20 @@ namespace MvcSASE
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var context = HttpContext.Current;
+            var exception = context.Server.GetLastError();
+            if (exception is HttpRequestValidationException)
+            {
+                context.Server.ClearError();
+                Response.Clear();
+                Response.StatusCode = 200;
+                Response.Write(@"<html><head></head><body>Nope.  Go back and try again.  <hr>Invalid input data detected.</body></html>");
+                Response.End();
+                return;
+            }
+        }
     }
 }
