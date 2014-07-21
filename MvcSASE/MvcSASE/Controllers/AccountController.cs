@@ -47,6 +47,7 @@ namespace MvcSASE.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
+            //return RedirectToRoute("/SASEs");
         }
 
         //

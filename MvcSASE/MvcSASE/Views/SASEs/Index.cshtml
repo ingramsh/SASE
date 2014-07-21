@@ -4,52 +4,22 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Storage Account Manager</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.userEmail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.storageAccount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.storageKey)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.userEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.storageAccount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.storageKey)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+<p />
+@Html.ActionLink("Create New Storage Accont", "Create")
+@foreach (var item in Model)
+{
+    <hr />
+    <p>
+    Storage Account Name: <strong>@item.storageAccount</strong> | @Html.ActionLink(" Storage Explore", "Index", "SASEExplorer", new { id = item.ID }, null)
+    </p>
+    <p>
+    @("Key: " + item.storageKey)</p>
+    <p>
+    @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+    @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+    @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+    </p>
 }
-
-</table>
-<p>
-    <h4>Storage Explorer</h4>
-    @foreach (var item in Model)
-    {
-            @Html.DisplayFor(modelItem => item.storageAccount)
-            @Html.ActionLink(" Explore", "Index", "SASEExplorer", new { id = item.ID }, null)
-            <p /><p />
-        
-    }
 

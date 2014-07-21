@@ -10,7 +10,6 @@ namespace MvcSASE.Controllers
     public class SASEExplorerController : Controller
     {
         private SASE s;
-        //private SASEExplorer explorer;
         private SASEDBContext db = new SASEDBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
@@ -23,15 +22,12 @@ namespace MvcSASE.Controllers
             s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
             s.passID = ID;
             CheckLogin();
-            
-            //explorer = new SASEExplorer(s.storageAccount, s.storageKey);
-
-            //return View(explorer);
 
             return View(s);
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult CreateContainer(string container, int? saseid)
         {
             if (saseid == null)
@@ -40,17 +36,18 @@ namespace MvcSASE.Controllers
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
             CheckLogin();
-
+            
             if (s.service.SASECreateContainer(container))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
             else
             {
                 //TODO:  Container not created handling
-                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+                return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
             }
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult CreateQueue(string queue, int? saseid)
         {
             if (saseid == null)
@@ -59,13 +56,13 @@ namespace MvcSASE.Controllers
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
             CheckLogin();
-
+            
             if (s.service.SASECreateQueue(queue))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
             else
             {
                 //TODO:  Container not created handling
-                return RedirectToLocal("/SASEExplorer/Index/" + saseid);
+                return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
             }
         }
 
@@ -113,7 +110,19 @@ namespace MvcSASE.Controllers
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
         }
-        
+                
+        public ActionResult InvalidCharacter(int? ID)
+        {
+            if (ID == null)
+                CheckLogin();
+
+            s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
+            s.passID = ID;
+            CheckLogin();
+
+            return View(s);
+        }
+
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

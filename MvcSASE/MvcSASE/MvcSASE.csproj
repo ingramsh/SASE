@@ -175,6 +175,12 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\azure.jpg" />
+    <Content Include="Content\images\Cloud.png" />
+    <Content Include="Content\images\Q.png" />
+    <Content Include="Content\images\storage.jpg" />
+    <Content Include="Content\images\test.jpg" />
+    <Content Include="Content\images\TheBlob.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -235,6 +241,7 @@
     <Content Include="Views\SASEExplorer\Queue.cshtml" />
     <Content Include="Views\Blob\Index.cshtml" />
     <Content Include="Views\Blob\Upload.cshtml" />
+    <Content Include="Views\SASEExplorer\InvalidCharacter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
