@@ -234,8 +234,6 @@
     <Content Include="Views\SASEs\Details.cshtml" />
     <Content Include="Views\SASEs\Edit.cshtml" />
     <Content Include="Views\SASEs\Index.cshtml" />
-    <Content Include="Views\GridPage.cshtml" />
-    <Content Include="Views\SASEs\View.cshtml" />
     <Content Include="Views\SASEExplorer\Index.cshtml" />
     <Content Include="Views\SASEExplorer\CreateContainer.cshtml" />
     <Content Include="Views\SASEExplorer\CreateQueue.cshtml" />
