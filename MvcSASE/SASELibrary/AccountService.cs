@@ -29,15 +29,15 @@ namespace SASELibrary
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
-        public List<string> SASEBlobContainerNames()
+        public override List<string> SASEBlobContainerNames()
         {
             return blob.GetContainerNames();
         }
-        public int SASEContainerCount()
+        public override int SASEContainerCount()
         {
             return this.SASEBlobContainerNames().Count;
         }
-        public List<string> SASEBlobItemNames(string container)
+        public override List<string> SASEBlobItemNames(string container)
         {
             List<string> blobNames = new List<String>();
             foreach (string item in blob.GetBlobItemNames(container))
@@ -54,11 +54,11 @@ namespace SASELibrary
 
             return blobNames;
         }
-        public List<string> SASEBlobItems(string container)
+        public override List<string> SASEBlobItems(string container)
         {
             return blob.GetBlobItemNames(container);
         }
-        public bool SASECreateContainer(string name)
+        public override bool SASECreateContainer(string name)
         {
             if (ContainerNameExists(name))
             {
@@ -73,7 +73,7 @@ namespace SASELibrary
             
             return blob.CreateContainer(name);
         }
-        public bool SASEUploadBlockBlob(string container, string filepath)
+        public override bool SASEUploadBlockBlob(string container, string filepath)
         {
             string filecheck;
 
@@ -109,7 +109,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEUploadBlockBlobBytes(string container, string name, byte[] file)
+        public override bool SASEUploadBlockBlobBytes(string container, string name, byte[] file)
         {
             if (!ContainerNameExists(container))
             {
@@ -129,7 +129,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEUploadBlockBlobStream(string container, string name, Stream file)
+        public override bool SASEUploadBlockBlobStream(string container, string name, Stream file)
         {
             if (!ContainerNameExists(container))
             {
@@ -149,7 +149,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEDownloadBlobBlock(string container, string item, string filepath)
+        public override bool SASEDownloadBlobBlock(string container, string item, string filepath)
         {
             string filecheck = Path.GetDirectoryName(filepath);
             if (filecheck == "")
@@ -175,7 +175,7 @@ namespace SASELibrary
 
             return true;
         }
-        public Stream SASEDownloadBlobStream(string container, string item)
+        public override Stream SASEDownloadBlobStream(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -193,7 +193,7 @@ namespace SASELibrary
 
             return blob.DownloadBlobStream(container, item);
         }
-        public byte[] SASEDownloadBlobBytes(string container, string item)
+        public override byte[] SASEDownloadBlobBytes(string container, string item)
         {
             byte[] byteArray;
 
@@ -213,7 +213,7 @@ namespace SASELibrary
 
             return byteArray = blob.GetBlobBytes(container, item);
         }
-        public List<string> SASEBlobInfo(string container, string item)
+        public override List<string> SASEBlobInfo(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -266,15 +266,15 @@ namespace SASELibrary
 
         #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
-        public List<string> SASEQueueNames()
+        public override List<string> SASEQueueNames()
         {
             return queue.GetQueueNames();
         }
-        public int SASEQueueCount()
+        public override int SASEQueueCount()
         {
             return this.SASEQueueNames().Count;
         }
-        public int SASEQueueMessageCount(string name)
+        public override int SASEQueueMessageCount(string name)
         {
             if (!QueueNameExists(name))
             {
@@ -284,7 +284,7 @@ namespace SASELibrary
 
             return queue.GetMessageCount(name);
         }
-        public bool SASECreateQueue(string name)
+        public override bool SASECreateQueue(string name)
         {
             if (QueueNameExists(name))
             {
@@ -299,7 +299,7 @@ namespace SASELibrary
 
             return queue.CreateQueue(name);
         }
-        public bool SASEEnqueueMessage(string name, string message)
+        public override bool SASEEnqueueMessage(string name, string message)
         {
             if (!QueueNameExists(name))
             {
@@ -309,7 +309,7 @@ namespace SASELibrary
 
             return queue.EnqueueMessage(name, message);
         }
-        public string SASEDequeueMessage(string name)
+        public override string SASEDequeueMessage(string name)
         {
             string message = null;
 
@@ -328,7 +328,7 @@ namespace SASELibrary
 
             return message;
         }
-        public List<string> SASEPeekMessage(string name)
+        public override List<string> SASEPeekMessage(string name)
         {
             List<string> peek = new List<string>();
 

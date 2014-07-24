@@ -15,7 +15,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SASELibrary.AzureQueue">
-    <Position X="13" Y="0.75" Width="1.5" />
+    <Position X="10.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAEAAAAIAIAAAAAAAAAAIAgAgAAAIAAAAQAAAAgA=</HashCode>
       <FileName>AzureQueue.cs</FileName>
@@ -26,6 +26,13 @@
     <TypeIdentifier>
       <HashCode>CCAAAAGAAAAAQAAAAAAAAAAAAGCAAAQECGAQAAAAAAA=</HashCode>
       <FileName>AzureBlob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SASELibrary.Queue" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAIAAAAAAAAAAAAgAgAAAIAAAAQAAAAAA=</HashCode>
+      <FileName>Queue.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

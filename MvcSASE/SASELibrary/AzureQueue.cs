@@ -29,7 +29,7 @@ namespace SASELibrary
         public AzureQueue() { }
 
         // Returns a list of queues named within the storage account
-        public List<string> GetQueueNames()
+        public override List<string> GetQueueNames()
         {
             List<string> names = new List<string>();
 
@@ -40,7 +40,7 @@ namespace SASELibrary
         }
 
         // Returns the queue's message count
-        public int GetMessageCount(string name)
+        public override int GetMessageCount(string name)
         {
             int? count = null;
 
@@ -55,7 +55,7 @@ namespace SASELibrary
         }
 
         // Create a new storage queue
-        public bool CreateQueue(string name)
+        public override bool CreateQueue(string name)
         {
             bool created = false;
 
@@ -69,7 +69,7 @@ namespace SASELibrary
         }
 
         // Enqueue a message to queue
-        public bool EnqueueMessage(string name, string message)
+        public override bool EnqueueMessage(string name, string message)
         {
             CloudQueueMessage queueMessage = new CloudQueueMessage(message);
             cloudQueue = queueClient.GetQueueReference(name);
@@ -87,7 +87,7 @@ namespace SASELibrary
         }
 
         // Dequeue a message from the front of queue
-        public string DequeueMessage(string name)
+        public override string DequeueMessage(string name)
         {
             string message;
 
@@ -101,7 +101,7 @@ namespace SASELibrary
         }
 
         // Peek a message from the front of queue
-        public List<string> PeekMessage(string name)
+        public override List<string> PeekMessage(string name)
         {
             List<string> peek = new List<string>();
 

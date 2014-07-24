@@ -1,13 +1,13 @@
 ﻿using System;
 namespace SASELibrary
 {
-    abstract class Queue
+    public abstract class Queue
     {
-        bool CreateQueue(string name);
-        string DequeueMessage(string name);
-        bool EnqueueMessage(string name, string message);
-        int GetMessageCount(string name);
-        System.Collections.Generic.List<string> GetQueueNames();
-        System.Collections.Generic.List<string> PeekMessage(string name);
+        public abstract bool CreateQueue(string name);
+        public abstract string DequeueMessage(string name);
+        public abstract bool EnqueueMessage(string name, string message);
+        public abstract int GetMessageCount(string name);
+        public abstract System.Collections.Generic.List<string> GetQueueNames();
+        public abstract System.Collections.Generic.List<string> PeekMessage(string name);
     }
 }

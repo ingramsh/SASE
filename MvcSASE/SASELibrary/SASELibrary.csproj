@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK">
+      <HintPath>..\packages\AWSSDK.2.2.0.0\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
@@ -62,9 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SASEBlob.cs" />
-    <Compile Include="SASEQueue.cs" />
-    <Compile Include="SASEAccountService.cs" />
+    <Compile Include="AWSQueue.cs" />
+    <Compile Include="AWSAccount.cs" />
+    <Compile Include="AWSBlob.cs" />
+    <Compile Include="AzureBlob.cs" />
+    <Compile Include="Blob.cs" />
+    <Compile Include="Account.cs" />
+    <Compile Include="Queue.cs" />
+    <Compile Include="AzureQueue.cs" />
+    <Compile Include="AccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
