@@ -3,102 +3,103 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Amazon.S3;
 namespace SASELibrary
 {
     public class AWSAccount : Account 
     {
-        public override List<string> SASEBlobContainerNames()
+        private AmazonS3Client client;
+        public override List<string> BlobContainerNames()
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> SASEBlobInfo(string container, string item)
+        public override List<string> BlobInfo(string container, string item)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> SASEBlobItemNames(string container)
+        public override List<string> BlobItemNames(string container)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> SASEBlobItems(string container)
+        public override List<string> BlobItems(string container)
         {
             throw new NotImplementedException();
         }
 
-        public override int SASEContainerCount()
+        public override int ContainerCount()
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASECreateContainer(string name)
+        public override bool CreateContainer(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASECreateQueue(string name)
+        public override bool CreateQueue(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override string SASEDequeueMessage(string name)
+        public override string DequeueMessage(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASEDownloadBlobBlock(string container, string item, string filepath)
+        public override bool DownloadBlobBlock(string container, string item, string filepath)
         {
             throw new NotImplementedException();
         }
 
-        public override byte[] SASEDownloadBlobBytes(string container, string item)
+        public override byte[] DownloadBlobBytes(string container, string item)
         {
             throw new NotImplementedException();
         }
 
-        public override System.IO.Stream SASEDownloadBlobStream(string container, string item)
+        public override System.IO.Stream DownloadBlobStream(string container, string item)
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASEEnqueueMessage(string name, string message)
+        public override bool EnqueueMessage(string name, string message)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> SASEPeekMessage(string name)
+        public override List<string> PeekMessage(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override int SASEQueueCount()
+        public override int QueueCount()
         {
             throw new NotImplementedException();
         }
 
-        public override int SASEQueueMessageCount(string name)
+        public override int QueueMessageCount(string name)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> SASEQueueNames()
+        public override List<string> QueueNames()
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASEUploadBlockBlob(string container, string filepath)
+        public override bool UploadBlockBlob(string container, string filepath)
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASEUploadBlockBlobBytes(string container, string name, byte[] file)
+        public override bool UploadBlockBlobBytes(string container, string name, byte[] file)
         {
             throw new NotImplementedException();
         }
 
-        public override bool SASEUploadBlockBlobStream(string container, string name, System.IO.Stream file)
+        public override bool UploadBlockBlobStream(string container, string name, System.IO.Stream file)
         {
             throw new NotImplementedException();
         }

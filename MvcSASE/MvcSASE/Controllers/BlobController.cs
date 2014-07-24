@@ -27,7 +27,7 @@ namespace MvcSASE.Controllers
             s.blobID = blobid;
 
             if (blobid >= 0)
-                s.blobInfo = s.service.SASEBlobInfo(containername, s.service.SASEBlobItemNames(containername)[blobid]);
+                s.blobInfo = s.service.BlobInfo(containername, s.service.BlobItemNames(containername)[blobid]);
 
             CheckLogin();
 
@@ -53,7 +53,7 @@ namespace MvcSASE.Controllers
                 //file.InputStream.Read(convert, 0, file.ContentLength);
 
                 //s.service.SASEUploadBlockBlobBytes(container, name, convert);
-                s.service.SASEUploadBlockBlobStream(container, name, file.InputStream);
+                s.service.UploadBlockBlobStream(container, name, file.InputStream);
             }
 
             return RedirectToLocal("/Blob/Index?containername=" + s.containerName + "&saseid=" + s.passID + "&blobid=-1");
@@ -70,8 +70,8 @@ namespace MvcSASE.Controllers
             s.blobID = -1;
             CheckLogin();
 
-            string fileName = s.service.SASEBlobItemNames(containername)[blobid];
-            byte[] file = s.service.SASEDownloadBlobBytes(containername, fileName);
+            string fileName = s.service.BlobItemNames(containername)[blobid];
+            byte[] file = s.service.DownloadBlobBytes(containername, fileName);
 
             return File(file, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
             //return RedirectToLocal("/Blob/Index?containername=" + s.containerName + "&saseid=" + s.passID + "&blobid=-1");
