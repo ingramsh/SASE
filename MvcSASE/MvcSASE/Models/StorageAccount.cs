@@ -22,11 +22,11 @@ namespace MvcSASE.Models
         [NotMapped]
         public string queueName { get; set; }
         [NotMapped]
-        public Account service
+        public AzureAccount service
         {
             get
             {
-                return new SASELibrary.Account(this.storageAccount, this.storageKey);
+                return new SASELibrary.AzureAccount(this.storageAccount, this.storageKey);
             }            
         }
         public int ID { get; set; }

@@ -10,7 +10,7 @@ using System.IO;
 
 namespace SASELibrary
 {
-    public class Account
+    public class AzureAccount : Account
     {
         private StorageCredentials creds;
         private CloudStorageAccount account;
@@ -18,14 +18,14 @@ namespace SASELibrary
         private AzureQueue queue;
 
         // Intended Constructor
-        public Account(string name, string key)
+        public AzureAccount(string name, string key)
         {
             creds = new StorageCredentials(name, key);
             account = new CloudStorageAccount(creds, false);
             blob = new AzureBlob(account);
             queue = new AzureQueue(account);
         }
-        public Account() { }
+        public AzureAccount() { }
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
