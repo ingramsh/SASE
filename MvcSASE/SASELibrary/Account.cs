@@ -1,7 +1,7 @@
 ﻿using System;
 namespace SASELibrary
 {
-    interface Account
+    abstract class Account
     {
         System.Collections.Generic.List<string> SASEBlobContainerNames();
         System.Collections.Generic.List<string> SASEBlobInfo(string container, string item);

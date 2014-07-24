@@ -1,7 +1,7 @@
 ﻿using System;
 namespace SASELibrary
 {
-    interface Queue
+    abstract class Queue
     {
         bool CreateQueue(string name);
         string DequeueMessage(string name);
