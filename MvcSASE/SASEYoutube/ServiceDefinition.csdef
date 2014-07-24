@@ -4,8 +4,15 @@
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <ConfigurationSettings>
+    </ConfigurationSettings>
   </WorkerRole>
   <WorkerRole name="SYWorker" vmsize="Small">
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
+  </WorkerRole>
+  <WorkerRole name="SYManagerBus" vmsize="Small">
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>

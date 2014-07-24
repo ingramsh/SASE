@@ -36,6 +36,48 @@
     <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SYManager\SYManager.csproj">
+      <Name>SYManager</Name>
+      <Project>{cb795ec3-02b1-41ae-b19c-d3425be44fa9}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>SYManager</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
+    <ProjectReference Include="..\SYWeb\SYWeb.csproj">
+      <Name>SYWeb</Name>
+      <Project>{30bc20f1-5a13-4db7-83e8-8dff6ef3a429}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>SYWeb</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
+    <ProjectReference Include="..\SYWorker\SYWorker.csproj">
+      <Name>SYWorker</Name>
+      <Project>{1db4c78b-b4a0-45fd-a079-236776cf4cda}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>SYWorker</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SYManagerContent\" />
+    <Folder Include="SYWebContent\" />
+    <Folder Include="SYWorkerContent\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SYManagerContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="SYWebContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="SYWorkerContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
