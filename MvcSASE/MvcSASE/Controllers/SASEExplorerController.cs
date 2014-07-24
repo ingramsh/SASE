@@ -9,7 +9,7 @@ namespace MvcSASE.Controllers
 {
     public class SASEExplorerController : Controller
     {
-        private SASE s;
+        private StorageAccount s;
         private SASEDBContext db = new SASEDBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 

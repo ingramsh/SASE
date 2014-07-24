@@ -10,22 +10,22 @@ using System.IO;
 
 namespace SASELibrary
 {
-    public class SASEAccountService
+    public class AccountService
     {
         private StorageCredentials creds;
         private CloudStorageAccount account;
-        private SASEBlob blob;
-        private SASEQueue queue;
+        private Blob blob;
+        private Queue queue;
 
         // Intended Constructor
-        public SASEAccountService(string name, string key)
+        public AccountService(string name, string key)
         {
             creds = new StorageCredentials(name, key);
             account = new CloudStorageAccount(creds, false);
-            blob = new SASEBlob(account);
-            queue = new SASEQueue(account);
+            blob = new Blob(account);
+            queue = new Queue(account);
         }
-        public SASEAccountService() { }
+        public AccountService() { }
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//

@@ -9,7 +9,7 @@ using System.IO;
 
 namespace SASELibrary
 {
-    class SASEBlob
+    class Blob
     {
         private CloudBlobClient blobClient;        
         private CloudBlobContainer blobContainer;
@@ -17,7 +17,7 @@ namespace SASELibrary
         private List<CloudBlobContainer> containerList = new List<CloudBlobContainer>();
 
         // Intended Constructor
-        public SASEBlob(CloudStorageAccount account)
+        public Blob(CloudStorageAccount account)
         {
             endpoint = account.BlobEndpoint;
             blobClient = new CloudBlobClient(endpoint, account.Credentials);
@@ -29,7 +29,7 @@ namespace SASELibrary
                 containerList.Add(blobContainer);
             }
         }
-        public SASEBlob() { }
+        public Blob() { }
 
         // Returns a list of container names within the storage account
         public List<string> GetContainerNames()

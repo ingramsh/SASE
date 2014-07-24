@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcSASE.Models
 {
-    public class SASE
+    public class StorageAccount
     {
         [NotMapped]
         public int? passID { get; set; }
@@ -22,11 +22,11 @@ namespace MvcSASE.Models
         [NotMapped]
         public string queueName { get; set; }
         [NotMapped]
-        public SASEAccountService service
+        public AccountService service
         {
             get
             {
-                return new SASELibrary.SASEAccountService(this.storageAccount, this.storageKey);
+                return new SASELibrary.AccountService(this.storageAccount, this.storageKey);
             }            
         }
         public int ID { get; set; }
@@ -37,7 +37,7 @@ namespace MvcSASE.Models
 
     public class SASEDBContext : DbContext
     {
-        public DbSet<SASE> Sase { get; set; }
+        public DbSet<StorageAccount> Sase { get; set; }
     }
 
     public class SASEUploadBlob
