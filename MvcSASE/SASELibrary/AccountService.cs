@@ -15,7 +15,7 @@ namespace SASELibrary
         private StorageCredentials creds;
         private CloudStorageAccount account;
         private AzureBlob blob;
-        private Queue queue;
+        private AzureQueue queue;
 
         // Intended Constructor
         public AccountService(string name, string key)
@@ -23,7 +23,7 @@ namespace SASELibrary
             creds = new StorageCredentials(name, key);
             account = new CloudStorageAccount(creds, false);
             blob = new AzureBlob(account);
-            queue = new Queue(account);
+            queue = new AzureQueue(account);
         }
         public AccountService() { }
 
