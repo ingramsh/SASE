@@ -18,7 +18,7 @@ namespace MvcSASE.Models
         [NotMapped]
         public int blobID { get; set; }
         [NotMapped]
-        public List<string> blobInfo { get; set; }
+        public IEnumerable<string> blobInfo { get; set; }
         [NotMapped]
         public string queueName { get; set; }
         [NotMapped]

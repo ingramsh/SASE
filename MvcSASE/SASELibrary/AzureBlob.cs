@@ -32,32 +32,22 @@ namespace SASELibrary
         public AzureBlob() { }
 
         // Returns a list of container names within the storage account
-        public override List<string> GetContainerNames()
+        public override IEnumerable<string> GetContainerNames()
         {
-            List<string> names = new List<string>();
-
             foreach (CloudBlobContainer container in containerList)
-                names.Add(container.Name);
-
-            return names;
+            {
+                yield return container.Name;
+            }
         }
 
         // Returns a list of blob items via their URI
-        public override List<string> GetBlobItemNames(string container)
+        public override IEnumerable<string> GetBlobItemNames(string container)
         {
-            List<string> names = new List<string>();
-
             blobContainer = blobClient.GetContainerReference(container);
             blobContainer.CreateIfNotExists();
 
-            IEnumerable<IListBlobItem> blobItems = blobContainer.ListBlobs();
-            foreach (IListBlobItem blobItem in blobItems)
-            {
-                
-                names.Add(blobItem.Uri.AbsolutePath.ToString().Replace("%20", " "));
-            }
-
-            return names;
+            return blobContainer.ListBlobs().Select(x=>DecodeURL(x.Uri.ToString()));
+            
         }
 
         // Creates a new container with reference 'name'
@@ -142,20 +132,17 @@ namespace SASELibrary
             return s;
         }
 
-        public override List<string> BlobInfo(string container, string item)
+        public override IEnumerable<string> BlobInfo(string container, string item)
         {
-            List<string> attributes = new List<string>();
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
 
             blob.FetchAttributes();
 
-            attributes.Add(blob.Properties.BlobType.ToString());
-            attributes.Add(blob.Properties.Length.ToString());
-            attributes.Add(blob.Properties.LastModified.ToString());
-            attributes.Add(blob.Uri.ToString());
-
-            return attributes;
+            yield return blob.Properties.BlobType.ToString();
+            yield return blob.Properties.Length.ToString();
+            yield return blob.Properties.LastModified.ToString();
+            yield return blob.Uri.ToString();
         }
     }
 }

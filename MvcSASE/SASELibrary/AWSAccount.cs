@@ -8,23 +8,23 @@ namespace SASELibrary
 {
     public class AWSAccount : Account 
     {
-        private AmazonS3Client client;
-        public override List<string> BlobContainerNames()
+        
+        public override IEnumerable<string> BlobContainerNames()
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> BlobInfo(string container, string item)
+        public override IEnumerable<string> BlobInfo(string container, string item)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> BlobItemNames(string container)
+        public override IEnumerable<string> BlobItemNames(string container)
         {
             throw new NotImplementedException();
         }
 
-        public override List<string> BlobItems(string container)
+        public override IEnumerable<string> BlobItems(string container)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@ namespace SASELibrary
             throw new NotImplementedException();
         }
 
-        public override List<string> PeekMessage(string name)
+        public override IEnumerable<string> PeekMessage(string name)
         {
             throw new NotImplementedException();
         }
@@ -84,7 +84,7 @@ namespace SASELibrary
             throw new NotImplementedException();
         }
 
-        public override List<string> QueueNames()
+        public override IEnumerable<string> QueueNames()
         {
             throw new NotImplementedException();
         }

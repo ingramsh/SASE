@@ -27,8 +27,9 @@ namespace MvcSASE.Controllers
             s.blobID = blobid;
 
             if (blobid >= 0)
-                s.blobInfo = s.service.BlobInfo(containername, s.service.BlobItemNames(containername)[blobid]);
-
+            { 
+                s.blobInfo = s.service.BlobInfo(containername, s.service.BlobItemNames(containername).ElementAt(blobid));
+                }
             CheckLogin();
 
             return View(s);
@@ -70,7 +71,7 @@ namespace MvcSASE.Controllers
             s.blobID = -1;
             CheckLogin();
 
-            string fileName = s.service.BlobItemNames(containername)[blobid];
+            string fileName = s.service.BlobItemNames(containername).ElementAt<string>(blobid);
             byte[] file = s.service.DownloadBlobBytes(containername, fileName);
 
             return File(file, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);

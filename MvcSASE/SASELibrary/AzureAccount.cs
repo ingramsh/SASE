@@ -29,17 +29,16 @@ namespace SASELibrary
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
-        public override List<string> BlobContainerNames()
+        public override IEnumerable<string> BlobContainerNames()
         {
             return blob.GetContainerNames();
         }
         public override int ContainerCount()
         {
-            return this.BlobContainerNames().Count;
+            return new List<string>(this.BlobContainerNames()).Count;
         }
-        public override List<string> BlobItemNames(string container)
+        public override IEnumerable<string> BlobItemNames(string container)
         {
-            List<string> blobNames = new List<String>();
             foreach (string item in blob.GetBlobItemNames(container))
             {
                 string itemName = "";
@@ -47,14 +46,13 @@ namespace SASELibrary
                 int slash2 = item.IndexOf("/", slash1 + 1);
 
                 if (slash2 > 1)
+                {
                     itemName = item.Remove(slash1, slash2 + 1);
-
-                blobNames.Add(itemName);
+                }
+                yield return itemName;
             }
-
-            return blobNames;
         }
-        public override List<string> BlobItems(string container)
+        public override IEnumerable<string> BlobItems(string container)
         {
             return blob.GetBlobItemNames(container);
         }
@@ -213,7 +211,7 @@ namespace SASELibrary
 
             return byteArray = blob.GetBlobBytes(container, item);
         }
-        public override List<string> BlobInfo(string container, string item)
+        public override IEnumerable<string> BlobInfo(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -266,13 +264,13 @@ namespace SASELibrary
 
         #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
-        public override List<string> QueueNames()
+        public override IEnumerable<string> QueueNames()
         {
             return queue.GetQueueNames();
         }
         public override int QueueCount()
         {
-            return this.QueueNames().Count;
+            return new List<string>(this.QueueNames()).Count;
         }
         public override int QueueMessageCount(string name)
         {
@@ -328,29 +326,27 @@ namespace SASELibrary
 
             return message;
         }
-        public override List<string> PeekMessage(string name)
+        public override IEnumerable<string> PeekMessage(string name)
         {
-            List<string> peek = new List<string>();
+            //if (!QueueNameExists(name))
+            //{
+            //    //TODO:  Create exception for attempting to peek a queue that does not exist
+            //    for (int i = 0; i < 5; i++)
+            //        peek.Add("");
 
-            if (!QueueNameExists(name))
-            {
-                //TODO:  Create exception for attempting to peek a queue that does not exist
-                for (int i = 0; i < 5; i++)
-                    peek.Add("");
+            //    return peek;
+            //}
+            //if (queue.GetMessageCount(name) == 0)
+            //{
+            //    //TODO:  Create exception for attempting to peek and empty queue
+            //    for (int i = 0; i < 5; i++)
+            //        peek.Add("");
 
-                return peek;
-            }
-            if (queue.GetMessageCount(name) == 0)
-            {
-                //TODO:  Create exception for attempting to peek and empty queue
-                for (int i = 0; i < 5; i++)
-                    peek.Add("");
+            //    return peek;
+            //}
 
-                return peek;
-            }
-
-            return queue.PeekMessage(name);
-
+            //return queue.PeekMessage(name);
+            throw new NotImplementedException();
             //return peek;
         }
         private bool QueueNameExists(string name)

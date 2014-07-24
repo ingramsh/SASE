@@ -3,14 +3,14 @@
   <Class Name="SASELibrary.AzureAccount">
     <Position X="3.75" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AQACAAQAAAAAAAhEEkDAEAACACAAAACAABQASIhgQAA=</HashCode>
-      <FileName>AccountService.cs</FileName>
+      <HashCode>CgAEBBCAAAAAKAAEAgBABAAAAkAgAUAEAEQQQABAQAA=</HashCode>
+      <FileName>AzureAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SASELibrary.Blob">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CCAAAACAAAAAAAAAAAAAAAAAAEAAAAQECGAQAAAAAAA=</HashCode>
+      <HashCode>CCAABACAAAAAAAAAAAAAAAAAAEAAgAQECGAQAAAAgAA=</HashCode>
       <FileName>Blob.cs</FileName>
     </TypeIdentifier>
   </Class>

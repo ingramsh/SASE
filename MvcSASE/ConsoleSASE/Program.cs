@@ -91,7 +91,7 @@ namespace ConsoleSASE
                 Console.WriteLine("Failed..\n");
             
             // Peek the first message of 'queueName'
-            List<string> peekMessage = sase.PeekMessage(queueName);
+            IEnumerable<string> peekMessage = sase.PeekMessage(queueName);
             
 
             if (peekMessage.Count() > 0)
