@@ -45,14 +45,6 @@
       <RoleName>SYManager</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
-    <ProjectReference Include="..\SYWeb\SYWeb.csproj">
-      <Name>SYWeb</Name>
-      <Project>{30bc20f1-5a13-4db7-83e8-8dff6ef3a429}</Project>
-      <Private>True</Private>
-      <RoleType>Web</RoleType>
-      <RoleName>SYWeb</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
     <ProjectReference Include="..\SYWorker\SYWorker.csproj">
       <Name>SYWorker</Name>
       <Project>{1db4c78b-b4a0-45fd-a079-236776cf4cda}</Project>
@@ -63,11 +55,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SYManagerBusContent\" />
     <Folder Include="SYManagerContent\" />
     <Folder Include="SYWebContent\" />
     <Folder Include="SYWorkerContent\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SYManagerBusContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="SYManagerContent\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>

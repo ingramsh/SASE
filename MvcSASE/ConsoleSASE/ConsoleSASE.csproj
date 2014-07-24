@@ -52,6 +52,10 @@
       <Project>{37c34d56-59a0-45d2-8c97-61a2670b1949}</Project>
       <Name>SASELibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SYManager\SYManager.csproj">
+      <Project>{cb795ec3-02b1-41ae-b19c-d3425be44fa9}</Project>
+      <Name>SYManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

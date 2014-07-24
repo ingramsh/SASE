@@ -79,9 +79,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvcSASE\MvcSASE.csproj">
-      <Project>{ee69a72e-acaf-4bf4-8710-aa523b7299a2}</Project>
-      <Name>MvcSASE</Name>
+    <ProjectReference Include="..\SASELibrary\SASELibrary.csproj">
+      <Project>{37c34d56-59a0-45d2-8c97-61a2670b1949}</Project>
+      <Name>SASELibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
