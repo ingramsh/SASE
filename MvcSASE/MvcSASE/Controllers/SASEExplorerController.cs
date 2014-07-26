@@ -1,8 +1,5 @@
 ﻿using MvcSASE.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcSASE.Controllers
@@ -98,8 +95,13 @@ namespace MvcSASE.Controllers
         [HttpPost]
         public ActionResult Enqueue(string message, string queuename, int? saseid)
         {
-            if (saseid == null)
-                CheckLogin();
+            CheckLogin();
+
+            if (queuename == "sase-youtube-in")
+            {
+                s = (from i in db.Sase where i.ID == 2 select i).FirstOrDefault();
+                s.service.SASEEnqueueMessage("sase-youtube-id", saseid.ToString());
+            }
 
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
@@ -109,6 +111,20 @@ namespace MvcSASE.Controllers
             s.service.SASEEnqueueMessage(queuename, message);
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
+        }
+
+        public ActionResult WorkerDemo(int? ID)
+        {
+            {
+                if (ID == null)
+                    CheckLogin();
+
+                s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
+                s.passID = ID;
+                CheckLogin();
+
+                return View(s);
+            }
         }
                 
         public ActionResult InvalidCharacter(int? ID)
