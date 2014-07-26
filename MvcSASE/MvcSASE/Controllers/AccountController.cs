@@ -26,7 +26,6 @@ namespace MvcSASE.Controllers
         public AccountController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
-            
         }
 
         public ApplicationUserManager UserManager {

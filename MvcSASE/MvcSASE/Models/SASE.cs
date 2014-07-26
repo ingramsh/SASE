@@ -22,6 +22,8 @@ namespace MvcSASE.Models
         [NotMapped]
         public string queueName { get; set; }
         [NotMapped]
+        bool active { get; set; }
+        [NotMapped]
         public SASEAccountService service
         {
             get

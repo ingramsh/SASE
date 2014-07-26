@@ -112,6 +112,20 @@ namespace MvcSASE.Controllers
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
         }
+
+        public ActionResult WorkerDemo(int? ID)
+        {
+            {
+                if (ID == null)
+                    CheckLogin();
+
+                s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
+                s.passID = ID;
+                CheckLogin();
+
+                return View(s);
+            }
+        }
                 
         public ActionResult InvalidCharacter(int? ID)
         {

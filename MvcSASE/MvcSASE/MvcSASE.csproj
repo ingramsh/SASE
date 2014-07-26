@@ -243,9 +243,11 @@
     <Content Include="Views\Blob\Index.cshtml" />
     <Content Include="Views\Blob\Upload.cshtml" />
     <Content Include="Views\SASEExplorer\InvalidCharacter.cshtml" />
+    <Content Include="Views\SASEExplorer\WorkerDemo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\WorkerDemo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -288,7 +290,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

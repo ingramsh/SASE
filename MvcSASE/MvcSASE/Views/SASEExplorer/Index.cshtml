@@ -52,14 +52,7 @@
     <input type="submit" value="Create Queue" />
 }
 <hr />
-<h4>Worker Role Demo Instructions: </h4>
 <p>
-    1. Create a new queue named: <b>sase-youtube-in</b><br />
-    2. Open the queue and enqueue a new message with a youtube video url<br />
-    3. If the worker role is currently online you will receive an output message regarding the completion of your request in the queue named: <b>sase-youtube-out</b><br />
-    4. If the completion status states "--extraction completed", you will receive a mp4 file of the youtube video in the blob container: <b>sase-youtube-videos</b><br /><br />
-    Notes:  If the worker is currently online, the request will take two minutes at the most to process.  Otherwise the worker role will attend to the request when it is next activated.<br />
-    (The output queue and container will be created in your storage account if they do not already exist.)
+    <a href="/SASEExplorer/WorkerDemo/@Model.passID">Azure Worker Role Demonstration</a><br />
 </p>
-<hr />
 <a href="/SASEs/Index">Back to Accounts</a>
