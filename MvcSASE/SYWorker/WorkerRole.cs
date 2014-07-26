@@ -80,7 +80,7 @@ namespace SYWorker
 
                             if (vid_info.Contains("errorcode"))
                             {
-                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id returned an error: " + id);
+                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id returned an error (likely copyright): " + id);
                                 continue;
                             }
 
