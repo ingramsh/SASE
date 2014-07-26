@@ -53,8 +53,9 @@ namespace SASELibrary
             IEnumerable<IListBlobItem> blobItems = blobContainer.ListBlobs();
             foreach (IListBlobItem blobItem in blobItems)
             {
-                
-                names.Add(blobItem.Uri.AbsolutePath.ToString().Replace("%20", " "));
+                string fix = blobItem.Uri.AbsolutePath.ToString();
+                fix = fix.Replace("%20", " ");
+                names.Add(fix.Replace("%22", "\""));
             }
 
             return names;
