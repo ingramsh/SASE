@@ -162,6 +162,7 @@ namespace SYWorker
                 uID = Convert.ToInt32(check.SASEDequeueMessage("sase-youtube-id"));
                 sase = (from i in db.Sase where i.ID == uID select i).FirstOrDefault();
             }
+            else Thread.Sleep(100000);
 
             return base.OnStart();
         }
