@@ -78,6 +78,12 @@ namespace SYWorker
 
                             string vid_info = HttpUtility.HtmlDecode(read.ReadToEnd());
 
+                            if (vid_info.Contains("errorcode"))
+                            {
+                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id returned an error: " + id);
+                                continue;
+                            }
+
                             NameValueCollection vid_params = HttpUtility.ParseQueryString(vid_info);
                             string[] vid_urls = vid_params["url_encoded_fmt_stream_map"].Split(',');
 
@@ -120,6 +126,8 @@ namespace SYWorker
 
                             if (completed == true)
                                 sase.service.SASEEnqueueMessage(queue_out, sytitle + "--extraction completed.");
+                            else 
+                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id could not be converted to mp4: " + id);
 
                         }
                     }
@@ -150,20 +158,18 @@ namespace SYWorker
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;
 
-            string name = "daowna";
-            string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";            
+            //  The specific ID on the user entity table that will facilitate the pointer queue "sase-youtube-id"
+            int checkID = 2;
+
+            sase = (from i in db.Sase where i.ID == checkID select i).FirstOrDefault();
+
+            while (sase.service.SASEQueueMessageCount("sase-youtube-id") == 0)
+                Thread.Sleep(100000);
+
             uID = -1;
-
-            SASEAccountService check;
-            check = new SASEAccountService(name, key);
-
-            if (check.SASEQueueMessageCount("sase-youtube-id") > 0)
-            {
-                uID = Convert.ToInt32(check.SASEDequeueMessage("sase-youtube-id"));
-                sase = (from i in db.Sase where i.ID == uID select i).FirstOrDefault();
-            }
-            else Thread.Sleep(100000);
-
+            uID = Convert.ToInt32(sase.service.SASEDequeueMessage("sase-youtube-id"));
+            sase = (from i in db.Sase where i.ID == uID select i).FirstOrDefault();
+            
             return base.OnStart();
         }
     }
