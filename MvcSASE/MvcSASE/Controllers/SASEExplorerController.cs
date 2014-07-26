@@ -95,8 +95,13 @@ namespace MvcSASE.Controllers
         [HttpPost]
         public ActionResult Enqueue(string message, string queuename, int? saseid)
         {
-            if (saseid == null)
-                CheckLogin();
+            CheckLogin();
+
+            if (queuename == "sase-youtube-in")
+            {
+                s = (from i in db.Sase where i.ID == 2 select i).FirstOrDefault();
+                s.service.SASEEnqueueMessage("sase-youtube-id", saseid.ToString());
+            }
 
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
