@@ -10,34 +10,34 @@ using System.IO;
 
 namespace SASELibrary
 {
-    public class SASEAccountService
+    public class AccountService
     {
         private StorageCredentials creds;
         private CloudStorageAccount account;
-        private SASEBlob blob;
-        private SASEQueue queue;
+        private Blob blob;
+        private Queue queue;
 
         // Intended Constructor
-        public SASEAccountService(string name, string key)
+        public AccountService(string name, string key)
         {
             creds = new StorageCredentials(name, key);
             account = new CloudStorageAccount(creds, false);
-            blob = new SASEBlob(account);
-            queue = new SASEQueue(account);
+            blob = new Blob(account);
+            queue = new Queue(account);
         }
-        public SASEAccountService() { }
+        public AccountService() { }
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
-        public List<string> SASEBlobContainerNames()
+        public List<string> BlobContainerNames()
         {
             return blob.GetContainerNames();
         }
-        public int SASEContainerCount()
+        public int ContainerCount()
         {
-            return this.SASEBlobContainerNames().Count;
+            return this.BlobContainerNames().Count;
         }
-        public List<string> SASEBlobItemNames(string container)
+        public List<string> BlobItemNames(string container)
         {
             List<string> blobNames = new List<String>();
             foreach (string item in blob.GetBlobItemNames(container))
@@ -54,11 +54,11 @@ namespace SASELibrary
 
             return blobNames;
         }
-        public List<string> SASEBlobItems(string container)
+        public List<string> BlobItems(string container)
         {
             return blob.GetBlobItemNames(container);
         }
-        public bool SASECreateContainer(string name)
+        public bool CreateContainer(string name)
         {
             if (ContainerNameExists(name))
             {
@@ -73,7 +73,7 @@ namespace SASELibrary
             
             return blob.CreateContainer(name);
         }
-        public bool SASEUploadBlockBlob(string container, string filepath)
+        public bool UploadBlockBlob(string container, string filepath)
         {
             string filecheck;
 
@@ -109,7 +109,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEUploadBlockBlobBytes(string container, string name, byte[] file)
+        public bool UploadBlockBlobBytes(string container, string name, byte[] file)
         {
             if (!ContainerNameExists(container))
             {
@@ -129,7 +129,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEUploadBlockBlobStream(string container, string name, Stream file)
+        public bool UploadBlockBlobStream(string container, string name, Stream file)
         {
             if (!ContainerNameExists(container))
             {
@@ -149,7 +149,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool SASEDownloadBlobBlock(string container, string item, string filepath)
+        public bool DownloadBlobBlock(string container, string item, string filepath)
         {
             string filecheck = Path.GetDirectoryName(filepath);
             if (filecheck == "")
@@ -175,7 +175,7 @@ namespace SASELibrary
 
             return true;
         }
-        public Stream SASEDownloadBlobStream(string container, string item)
+        public Stream DownloadBlobStream(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -193,7 +193,7 @@ namespace SASELibrary
 
             return blob.DownloadBlobStream(container, item);
         }
-        public byte[] SASEDownloadBlobBytes(string container, string item)
+        public byte[] DownloadBlobBytes(string container, string item)
         {
             byte[] byteArray;
 
@@ -213,7 +213,7 @@ namespace SASELibrary
 
             return byteArray = blob.GetBlobBytes(container, item);
         }
-        public List<string> SASEBlobInfo(string container, string item)
+        public List<string> BlobInfo(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -266,15 +266,15 @@ namespace SASELibrary
 
         #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
-        public List<string> SASEQueueNames()
+        public List<string> QueueNames()
         {
             return queue.GetQueueNames();
         }
-        public int SASEQueueCount()
+        public int QueueCount()
         {
-            return this.SASEQueueNames().Count;
+            return this.QueueNames().Count;
         }
-        public int SASEQueueMessageCount(string name)
+        public int QueueMessageCount(string name)
         {
             if (!QueueNameExists(name))
             {
@@ -284,7 +284,7 @@ namespace SASELibrary
 
             return queue.GetMessageCount(name);
         }
-        public bool SASECreateQueue(string name)
+        public bool CreateQueue(string name)
         {
             if (QueueNameExists(name))
             {
@@ -299,7 +299,7 @@ namespace SASELibrary
 
             return queue.CreateQueue(name);
         }
-        public bool SASEEnqueueMessage(string name, string message)
+        public bool EnqueueMessage(string name, string message)
         {
             if (!QueueNameExists(name))
             {
@@ -309,7 +309,7 @@ namespace SASELibrary
 
             return queue.EnqueueMessage(name, message);
         }
-        public string SASEDequeueMessage(string name)
+        public string DequeueMessage(string name)
         {
             string message = null;
 
@@ -328,7 +328,7 @@ namespace SASELibrary
 
             return message;
         }
-        public List<string> SASEPeekMessage(string name)
+        public List<string> PeekMessage(string name)
         {
             List<string> peek = new List<string>();
 

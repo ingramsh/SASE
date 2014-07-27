@@ -36,20 +36,20 @@ namespace SYWorker
             if (uID == null || uID < 0)
                 return;
 
-            sase.service.SASECreateContainer(container);
-            sase.service.SASECreateQueue(queue_in);
-            sase.service.SASECreateQueue(queue_out);
+            sase.service.CreateContainer(container);
+            sase.service.CreateQueue(queue_in);
+            sase.service.CreateQueue(queue_out);
 
-            while (sase.service.SASEQueueMessageCount("sase-youtube-in") > 0)
+            while (sase.service.QueueMessageCount("sase-youtube-in") > 0)
             {
                 Trace.TraceInformation("Working");
                 completed = false;
 
-                if (sase.service.SASEQueueMessageCount(queue_in) > 0)
+                if (sase.service.QueueMessageCount(queue_in) > 0)
                 {
                     List<string> peek;
-                    peek = sase.service.SASEPeekMessage(queue_in);
-                    sase.service.SASEDequeueMessage(queue_in);
+                    peek = sase.service.PeekMessage(queue_in);
+                    sase.service.DequeueMessage(queue_in);
 
                     if (Convert.ToInt32(peek[1]) >= 2)
                         continue;
@@ -80,7 +80,7 @@ namespace SYWorker
 
                             if (vid_info.Contains("errorcode"))
                             {
-                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id returned an error (likely copyright): " + id);
+                                sase.service.EnqueueMessage(queue_out, "The following youtube id returned an error (likely copyright): " + id);
                                 continue;
                             }
 
@@ -125,9 +125,9 @@ namespace SYWorker
                             }
 
                             if (completed == true)
-                                sase.service.SASEEnqueueMessage(queue_out, sytitle + "--extraction completed.");
+                                sase.service.EnqueueMessage(queue_out, sytitle + "--extraction completed.");
                             else 
-                                sase.service.SASEEnqueueMessage(queue_out, "The following youtube id could not be converted to mp4: " + id);
+                                sase.service.EnqueueMessage(queue_out, "The following youtube id could not be converted to mp4: " + id);
 
                         }
                     }
@@ -147,7 +147,7 @@ namespace SYWorker
                 Stream stream = new MemoryStream(raw);
                 stream.Position = 0;
 
-                sase.service.SASEUploadBlockBlobStream(container, sytitle, stream);
+                sase.service.UploadBlockBlobStream(container, sytitle, stream);
                 
                 completed = true;
             }
@@ -163,11 +163,11 @@ namespace SYWorker
 
             sase = (from i in db.Sase where i.ID == checkID select i).FirstOrDefault();
 
-            while (sase.service.SASEQueueMessageCount("sase-youtube-id") == 0)
+            while (sase.service.QueueMessageCount("sase-youtube-id") == 0)
                 Thread.Sleep(100000);
 
             uID = -1;
-            uID = Convert.ToInt32(sase.service.SASEDequeueMessage("sase-youtube-id"));
+            uID = Convert.ToInt32(sase.service.DequeueMessage("sase-youtube-id"));
             sase = (from i in db.Sase where i.ID == uID select i).FirstOrDefault();
             
             return base.OnStart();

@@ -8,13 +8,13 @@
 <p />
 <h4>Blobs Items:</h4>
 <form>
-    @for (int i = 0; i < Model.service.SASEBlobItemNames(Model.containerName).Count(); i++)
+    @for (int i = 0; i < Model.service.BlobItemNames(Model.containerName).Count(); i++)
     {
         <p>
-            @Model.service.SASEBlobItemNames(Model.containerName)[i]
-            - <a href="/Blob/Index?containername=@Model.containerName&itemname=@Model.service.SASEBlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
+            @Model.service.BlobItemNames(Model.containerName)[i]
+            - <a href="/Blob/Index?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
                 Inspect</a> |
-            <a href="/Blob/Download?containername=@Model.containerName&itemname=@Model.service.SASEBlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
+            <a href="/Blob/Download?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
                 Download</a>
         </p>
         if (i == Model.blobID)

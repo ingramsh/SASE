@@ -34,7 +34,7 @@ namespace MvcSASE.Controllers
             s.passID = saseid;
             CheckLogin();
             
-            if (s.service.SASECreateContainer(container))
+            if (s.service.CreateContainer(container))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
             else
             {
@@ -54,7 +54,7 @@ namespace MvcSASE.Controllers
             s.passID = saseid;
             CheckLogin();
             
-            if (s.service.SASECreateQueue(queue))
+            if (s.service.CreateQueue(queue))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
             else
             {
@@ -87,7 +87,7 @@ namespace MvcSASE.Controllers
             s.queueName = queuename;
             CheckLogin();
 
-            s.service.SASEDequeueMessage(queuename);
+            s.service.DequeueMessage(queuename);
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
         }
@@ -100,7 +100,7 @@ namespace MvcSASE.Controllers
             if (queuename == "sase-youtube-in")
             {
                 s = (from i in db.Sase where i.ID == 2 select i).FirstOrDefault();
-                s.service.SASEEnqueueMessage("sase-youtube-id", saseid.ToString());
+                s.service.EnqueueMessage("sase-youtube-id", saseid.ToString());
             }
 
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
@@ -108,7 +108,7 @@ namespace MvcSASE.Controllers
             s.queueName = queuename;
             CheckLogin();
 
-            s.service.SASEEnqueueMessage(queuename, message);
+            s.service.EnqueueMessage(queuename, message);
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
         }
