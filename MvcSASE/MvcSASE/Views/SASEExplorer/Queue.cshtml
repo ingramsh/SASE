@@ -6,14 +6,14 @@
 
 <h2>Queue: @Model.queueName</h2>
 <p />
-<h4>Queue Message Count: @Model.service.SASEQueueMessageCount(Model.queueName)</h4>
+<h4>Queue Message Count: @Model.service.QueueMessageCount(Model.queueName)</h4>
 <p />
-Front Message: "@Model.service.SASEPeekMessage(Model.queueName)[0]"
+Front Message: "@Model.service.PeekMessage(Model.queueName)[0]"
 <p />
-Dequeue Count: @Model.service.SASEPeekMessage(Model.queueName)[1] 
+Dequeue Count: @Model.service.PeekMessage(Model.queueName)[1] 
 <p />
-Inserted: @Model.service.SASEPeekMessage(Model.queueName)[2] | Expires: @Model.service.SASEPeekMessage(Model.queueName)[3] | 
-    Next Visible: @Model.service.SASEPeekMessage(Model.queueName)[4]
+Inserted: @Model.service.PeekMessage(Model.queueName)[2] | Expires: @Model.service.PeekMessage(Model.queueName)[3] | 
+    Next Visible: @Model.service.PeekMessage(Model.queueName)[4]
 <hr />
 @using (Html.BeginForm("Dequeue",
                         "SASEExplorer",

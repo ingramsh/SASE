@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SASELibrary
 {
-    class SASEQueue
+    class Queue
     {
         CloudQueueClient queueClient;
         CloudQueue cloudQueue;
@@ -16,7 +16,7 @@ namespace SASELibrary
         private List<CloudQueue> queueList = new List<CloudQueue>();
 
         // Intended Constructor
-        public SASEQueue(CloudStorageAccount account)
+        public Queue(CloudStorageAccount account)
         {
             queueClient = account.CreateCloudQueueClient();
 
@@ -26,7 +26,7 @@ namespace SASELibrary
                 queueList.Add(cloudQueue);
             }
         }
-        public SASEQueue() { }
+        public Queue() { }
 
         // Returns a list of queues named within the storage account
         public List<string> GetQueueNames()

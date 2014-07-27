@@ -24,11 +24,11 @@ namespace MvcSASE.Models
         [NotMapped]
         bool active { get; set; }
         [NotMapped]
-        public SASEAccountService service
+        public AccountService service
         {
             get
             {
-                return new SASELibrary.SASEAccountService(this.storageAccount, this.storageKey);
+                return new SASELibrary.AccountService(this.storageAccount, this.storageKey);
             }            
         }
         public int ID { get; set; }

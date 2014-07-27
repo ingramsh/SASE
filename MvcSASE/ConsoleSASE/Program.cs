@@ -16,7 +16,7 @@ namespace ConsoleSASE
             string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";
 
             // Creates account service class from SASE library
-            SASEAccountService sase = new SASEAccountService(name, key);
+            AccountService sase = new AccountService(name, key);
 
             /********************************************
             // Attempt to create a new container
@@ -49,7 +49,7 @@ namespace ConsoleSASE
 
             // List all blob containers by name and their blob items
             Console.WriteLine("The blob containers and their contents on this storage account are:\n");
-            foreach (string container in sase.SASEBlobContainerNames())
+            foreach (string container in sase.BlobContainerNames())
             {
                 Console.WriteLine(container);
                 /*foreach (string item in sase.SASEBlobItemNames(container))
@@ -63,7 +63,7 @@ namespace ConsoleSASE
 
                     Console.WriteLine('\t' + itemName);                    
                 }*/
-                foreach (string item in sase.SASEBlobItemNames(container))
+                foreach (string item in sase.BlobItemNames(container))
                     Console.WriteLine('\t' + item);
 
                 Console.WriteLine("");
@@ -85,13 +85,13 @@ namespace ConsoleSASE
 
             // Enqueue a 'message' to 'queueName'
             Console.WriteLine("\n\nAttempting to enqueue the message: " + message + "\nTo queue: " + queueName);
-            if (sase.SASEEnqueueMessage(queueName, message))
+            if (sase.EnqueueMessage(queueName, message))
                 Console.WriteLine("Succeeded!\n");
             else
                 Console.WriteLine("Failed..\n");
             
             // Peek the first message of 'queueName'
-            List<string> peekMessage = sase.SASEPeekMessage(queueName);
+            List<string> peekMessage = sase.PeekMessage(queueName);
             
 
             if (peekMessage.Count() > 0)
@@ -110,7 +110,7 @@ namespace ConsoleSASE
             // Dequeue the first message of 'queueName'
             string dequeueMessage = null;
             Console.WriteLine("Attempting to dequeue message from: " + queueName);
-            dequeueMessage = sase.SASEDequeueMessage(queueName);
+            dequeueMessage = sase.DequeueMessage(queueName);
 
             if (dequeueMessage == null)
                 Console.WriteLine("Failed: " + dequeueMessage);
@@ -119,10 +119,10 @@ namespace ConsoleSASE
 
             // List all storage queues by name and their approximate message count
             Console.WriteLine("\nThe queue names on this storage account are:");
-            foreach (string container in sase.SASEQueueNames())
+            foreach (string container in sase.QueueNames())
             {
                 Console.Write(container);
-                Console.WriteLine("\t\tMessage Count: " + sase.SASEQueueMessageCount(container).ToString());
+                Console.WriteLine("\t\tMessage Count: " + sase.QueueMessageCount(container).ToString());
             }
 
             // End of program.  Keeps console window open.
