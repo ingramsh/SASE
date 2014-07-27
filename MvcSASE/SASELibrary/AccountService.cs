@@ -266,13 +266,13 @@ namespace SASELibrary
 
         #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
-        public List<string> QueueNames()
+        public IEnumerable<string> QueueNames()
         {
             return queue.GetQueueNames();
         }
         public int QueueCount()
         {
-            return this.QueueNames().Count;
+            return this.QueueNames().ToList<string>().Count;
         }
         public int QueueMessageCount(string name)
         {
@@ -328,30 +328,25 @@ namespace SASELibrary
 
             return message;
         }
-        public List<string> PeekMessage(string name)
+        public Message PeekMessage(string name)
         {
-            List<string> peek = new List<string>();
+            //List<string> peek = new List<string>();
+            Message peek = new Message();
 
             if (!QueueNameExists(name))
             {
-                //TODO:  Create exception for attempting to peek a queue that does not exist
-                for (int i = 0; i < 5; i++)
-                    peek.Add("");
-
-                return peek;
+                //TODO:  Create exception for attempting to peek a queue that does not exist  
+                return null;
             }
             if (queue.GetMessageCount(name) == 0)
             {
                 //TODO:  Create exception for attempting to peek and empty queue
-                for (int i = 0; i < 5; i++)
-                    peek.Add("");
-
-                return peek;
+                return null;
             }
 
-            return queue.PeekMessage(name);
+            peek = queue.PeekMessage(name);
 
-            //return peek;
+            return queue.PeekMessage(name);
         }
         private bool QueueNameExists(string name)
         {

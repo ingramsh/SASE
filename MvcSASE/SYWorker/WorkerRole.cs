@@ -47,18 +47,18 @@ namespace SYWorker
 
                 if (sase.service.QueueMessageCount(queue_in) > 0)
                 {
-                    List<string> peek;
+                    Message peek;
                     peek = sase.service.PeekMessage(queue_in);
                     sase.service.DequeueMessage(queue_in);
 
-                    if (Convert.ToInt32(peek[1]) >= 2)
+                    if (Convert.ToInt32(peek.DequeueCount) >= 2)
                         continue;
                     else
                     {
                         string message = string.Empty;
                         string id = string.Empty;
 
-                        message = peek[0];
+                        message = peek.MessageString;
                         string url = message;
 
                         Regex YoutubeVideoRegex = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase);

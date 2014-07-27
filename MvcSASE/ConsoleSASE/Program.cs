@@ -90,6 +90,7 @@ namespace ConsoleSASE
             else
                 Console.WriteLine("Failed..\n");
             
+            /*
             // Peek the first message of 'queueName'
             List<string> peekMessage = sase.PeekMessage(queueName);
             
@@ -105,6 +106,7 @@ namespace ConsoleSASE
             if (peekMessage.Count() > 4)
                 Console.WriteLine("Next Visible In: \t" + peekMessage.ElementAt(4));
             Console.WriteLine('\n');
+            */
             
 
             // Dequeue the first message of 'queueName'
