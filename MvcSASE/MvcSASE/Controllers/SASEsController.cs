@@ -8,12 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using MvcSASE.Models;
 using Microsoft.AspNet.Identity;
+using SASELibrary;
 
 namespace MvcSASE.Controllers
 {
     public class SASEsController : Controller
     {
-        private SASEDBContext db = new SASEDBContext();
+        private DBContext db = new DBContext();
         string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: SASEs
@@ -36,7 +37,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SASE sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -55,7 +56,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] SASE sASE)
+        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +75,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SASE sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -87,7 +88,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] SASE sASE)
+        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +106,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SASE sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -118,7 +119,7 @@ namespace MvcSASE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SASE sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             db.Sase.Remove(sASE);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -5,14 +5,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using SASELibrary;
 
 
 namespace MvcSASE.Controllers
 {
     public class BlobController : Controller
     {
-        private SASE s;
-        private SASEDBContext db = new SASEDBContext();
+        private AccountService s;
+        private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: Blob

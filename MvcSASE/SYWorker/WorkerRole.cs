@@ -17,8 +17,8 @@ namespace SYWorker
 {
     public class WorkerRole : RoleEntryPoint
     {
-        private SASEDBContext db = new SASEDBContext();
-        private SASE sase;
+        private DBContext db = new DBContext();
+        private AccountService sase;
         
         private int? uID;
 

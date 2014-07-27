@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SASELibrary
 {
@@ -354,6 +355,33 @@ namespace SASELibrary
 
             return false;
         }
+        #endregion
+
+        #region MVC MODEL MIGRATION
+        [NotMapped]
+        public int? passID { get; set; }
+        [NotMapped]
+        public string containerName { get; set; }
+        [NotMapped]
+        public int blobID { get; set; }
+        [NotMapped]
+        public BlobInfo blobInfo { get; set; }
+        [NotMapped]
+        public string queueName { get; set; }
+        [NotMapped]
+        bool active { get; set; }
+        [NotMapped]
+        public AccountService service
+        {
+            get
+            {
+                return new SASELibrary.AccountService(this.storageAccount, this.storageKey);
+            }
+        }
+        public int ID { get; set; }
+        public string userEmail { get; set; }
+        public string storageAccount { get; set; }
+        public string storageKey { get; set; }
         #endregion
     }
 }
