@@ -32,21 +32,14 @@ namespace SASELibrary
         public Blob() { }
 
         // Returns a list of container names within the storage account
-        public List<string> GetContainerNames()
+        public IEnumerable<string> GetContainerNames()
         {
-            List<string> names = new List<string>();
-
-            foreach (CloudBlobContainer container in containerList)
-                names.Add(container.Name);
-
-            return names;
+            return containerList.Select(t => t.Name);
         }
 
         // Returns a list of blob items via their URI
-        public List<string> GetBlobItemNames(string container)
+        public IEnumerable<string> GetBlobItemNames(string container)
         {
-            List<string> names = new List<string>();
-
             blobContainer = blobClient.GetContainerReference(container);
             blobContainer.CreateIfNotExists();
 
@@ -55,10 +48,8 @@ namespace SASELibrary
             {
                 string fix = blobItem.Uri.AbsolutePath.ToString();
                 fix = fix.Replace("%20", " ");
-                names.Add(fix.Replace("%22", "\""));
+                yield return fix.Replace("%22", "\"");
             }
-
-            return names;
         }
 
         // Creates a new container with reference 'name'
@@ -143,20 +134,29 @@ namespace SASELibrary
             return s;
         }
 
-        public List<string> BlobInfo(string container, string item)
+        public BlobInfo BlobInfo(string container, string item)
         {
-            List<string> attributes = new List<string>();
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
 
             blob.FetchAttributes();
 
-            attributes.Add(blob.Properties.BlobType.ToString());
-            attributes.Add(blob.Properties.Length.ToString());
-            attributes.Add(blob.Properties.LastModified.ToString());
-            attributes.Add(blob.Uri.ToString());
+            BlobInfo blobinfo = new BlobInfo()
+            {
+                BlobType = blob.Properties.BlobType.ToString(),
+                Length = blob.Properties.Length.ToString(),
+                LastModified = blob.Properties.LastModified.ToString(),
+                BlobLocation = blob.Uri.ToString()
+            };
 
-            return attributes;
+            return blobinfo;
         }
+    }
+    public class BlobInfo
+    {
+        public string BlobType { get; set; }
+        public string Length { get; set; }
+        public string LastModified { get; set; }
+        public string BlobLocation { get; set; }
     }
 }

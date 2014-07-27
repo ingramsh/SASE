@@ -29,15 +29,15 @@ namespace SASELibrary
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
-        public List<string> BlobContainerNames()
+        public IEnumerable<string> BlobContainerNames()
         {
             return blob.GetContainerNames();
         }
-        public int ContainerCount()
+        /*public int ContainerCount()
         {
             return this.BlobContainerNames().Count;
-        }
-        public List<string> BlobItemNames(string container)
+        }*/
+        public IEnumerable<string> BlobItemNames(string container)
         {
             List<string> blobNames = new List<String>();
             foreach (string item in blob.GetBlobItemNames(container))
@@ -54,7 +54,7 @@ namespace SASELibrary
 
             return blobNames;
         }
-        public List<string> BlobItems(string container)
+        public IEnumerable<string> BlobItems(string container)
         {
             return blob.GetBlobItemNames(container);
         }
@@ -213,7 +213,7 @@ namespace SASELibrary
 
             return byteArray = blob.GetBlobBytes(container, item);
         }
-        public List<string> BlobInfo(string container, string item)
+        public BlobInfo BlobInfo(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
