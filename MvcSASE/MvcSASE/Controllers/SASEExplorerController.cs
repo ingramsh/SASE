@@ -7,7 +7,7 @@ namespace MvcSASE.Controllers
 {
     public class SASEExplorerController : Controller
     {
-        private AzureAccountService s;
+        private AccountService s;
         private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 

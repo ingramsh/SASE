@@ -6,6 +6,6 @@ namespace SASELibrary
     {
         public DBContext()
             : base("SASEDBContext") { }
-        public DbSet<AzureAccountService> Sase { get; set; }
+        public DbSet<AccountService> Sase { get; set; }
     }
 }

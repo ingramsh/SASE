@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SASELibrary
 {
-    public class AzureAccountService
+    public class AzureAccountService : AccountService
     {
         private StorageCredentials creds;
         private CloudStorageAccount account;
@@ -55,15 +55,15 @@ namespace SASELibrary
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
-        public IEnumerable<string> BlobContainerNames()
+        public override IEnumerable<string> BlobContainerNames()
         {
             return BlobController.GetContainerNames();
         }
-        /*public int ContainerCount()
+        /*public override int ContainerCount()
         {
             return this.BlobContainerNames().Count;
         }*/
-        public IEnumerable<string> BlobItemNames(string container)
+        public override IEnumerable<string> BlobItemNames(string container)
         {
             List<string> blobNames = new List<String>();
             foreach (string item in BlobController.GetBlobItemNames(container))
@@ -80,11 +80,11 @@ namespace SASELibrary
 
             return blobNames;
         }
-        public IEnumerable<string> BlobItems(string container)
+        public override IEnumerable<string> BlobItems(string container)
         {
             return BlobController.GetBlobItemNames(container);
         }
-        public bool CreateContainer(string name)
+        public override bool CreateContainer(string name)
         {
             if (ContainerNameExists(name))
             {
@@ -99,7 +99,7 @@ namespace SASELibrary
             
             return BlobController.CreateContainer(name);
         }
-        public bool UploadBlockBlob(string container, string filepath)
+        public override bool UploadBlockBlob(string container, string filepath)
         {
             string filecheck;
 
@@ -135,7 +135,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool UploadBlockBlobBytes(string container, string name, byte[] file)
+        public override bool UploadBlockBlobBytes(string container, string name, byte[] file)
         {
             if (!ContainerNameExists(container))
             {
@@ -155,7 +155,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool UploadBlockBlobStream(string container, string name, Stream file)
+        public override bool UploadBlockBlobStream(string container, string name, Stream file)
         {
             if (!ContainerNameExists(container))
             {
@@ -175,7 +175,7 @@ namespace SASELibrary
 
             return true;
         }
-        public bool DownloadBlobBlock(string container, string item, string filepath)
+        public override bool DownloadBlobBlock(string container, string item, string filepath)
         {
             string filecheck = Path.GetDirectoryName(filepath);
             if (filecheck == "")
@@ -201,7 +201,7 @@ namespace SASELibrary
 
             return true;
         }
-        public Stream DownloadBlobStream(string container, string item)
+        public override Stream DownloadBlobStream(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -219,7 +219,7 @@ namespace SASELibrary
 
             return BlobController.DownloadBlobStream(container, item);
         }
-        public byte[] DownloadBlobBytes(string container, string item)
+        public override byte[] DownloadBlobBytes(string container, string item)
         {
             byte[] byteArray;
 
@@ -239,7 +239,7 @@ namespace SASELibrary
 
             return byteArray = BlobController.GetBlobBytes(container, item);
         }
-        public BlobInfo BlobInfo(string container, string item)
+        public override BlobInfo BlobInfo(string container, string item)
         {
             if (!ContainerNameExists(container))
             {
@@ -292,15 +292,15 @@ namespace SASELibrary
 
         #region SASE QUEUE OPPs
         //---SASE Queue Operations---//
-        public IEnumerable<string> QueueNames()
+        public override IEnumerable<string> QueueNames()
         {
             return QueueController.GetQueueNames();
         }
-        public int QueueCount()
+        public override int QueueCount()
         {
             return this.QueueNames().ToList<string>().Count;
         }
-        public int QueueMessageCount(string name)
+        public override int QueueMessageCount(string name)
         {
             if (!QueueNameExists(name))
             {
@@ -310,7 +310,7 @@ namespace SASELibrary
 
             return QueueController.GetMessageCount(name);
         }
-        public bool CreateQueue(string name)
+        public override bool CreateQueue(string name)
         {
             if (QueueNameExists(name))
             {
@@ -325,7 +325,7 @@ namespace SASELibrary
 
             return QueueController.CreateQueue(name);
         }
-        public bool EnqueueMessage(string name, string message)
+        public override bool EnqueueMessage(string name, string message)
         {
             if (!QueueNameExists(name))
             {
@@ -335,7 +335,7 @@ namespace SASELibrary
 
             return QueueController.EnqueueMessage(name, message);
         }
-        public string DequeueMessage(string name)
+        public override string DequeueMessage(string name)
         {
             string message = null;
 
@@ -354,7 +354,7 @@ namespace SASELibrary
 
             return message;
         }
-        public Message PeekMessage(string name)
+        public override Message PeekMessage(string name)
         {
             //List<string> peek = new List<string>();
             Message peek = new Message();
@@ -382,33 +382,6 @@ namespace SASELibrary
 
             return false;
         }
-        #endregion
-
-        #region MVC MODEL MIGRATION
-        [NotMapped]
-        public int? passID { get; set; }
-        [NotMapped]
-        public string containerName { get; set; }
-        [NotMapped]
-        public int blobID { get; set; }
-        [NotMapped]
-        public BlobInfo blobInfo { get; set; }
-        [NotMapped]
-        public string queueName { get; set; }
-        [NotMapped]
-        bool active { get; set; }
-        [NotMapped]
-        public AzureAccountService service
-        {
-            get
-            {
-                return this;
-            }
-        }
-        public int ID { get; set; }
-        public string userEmail { get; set; }
-        public string storageAccount { get; set; }
-        public string storageKey { get; set; }
         #endregion
     }
 }
