@@ -7,7 +7,7 @@ using System.IO;
 
 namespace SASELibrary
 {
-    class Blob
+    public class Blob
     {
         private CloudBlobClient blobClient;        
         private CloudBlobContainer blobContainer;
