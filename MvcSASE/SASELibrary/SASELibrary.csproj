@@ -71,16 +71,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blob.cs" />
-    <Compile Include="DBContext.cs" />
-    <Compile Include="Queue.cs" />
     <Compile Include="AccountService.cs" />
+    <Compile Include="AzureBlob.cs" />
+    <Compile Include="DBContext.cs" />
+    <Compile Include="AzureQueue.cs" />
+    <Compile Include="AzureAccountService.cs" />
+    <Compile Include="Migrations\201407272316282_InitialCreate.cs" />
+    <Compile Include="Migrations\201407272316282_InitialCreate.Designer.cs">
+      <DependentUpon>201407272316282_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407280039535_Inheritance.cs" />
+    <Compile Include="Migrations\201407280039535_Inheritance.Designer.cs">
+      <DependentUpon>201407280039535_Inheritance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201407272316282_InitialCreate.resx">
+      <DependentUpon>201407272316282_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407280039535_Inheritance.resx">
+      <DependentUpon>201407280039535_Inheritance.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

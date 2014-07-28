@@ -16,7 +16,7 @@ namespace ConsoleSASE
             string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";
 
             // Creates account service class from SASE library
-            AccountService sase = new AccountService() { storageAccount = name, storageKey = key };
+            AzureAccountService sase = new AzureAccountService() { storageAccount = name, storageKey = key };
 
             /********************************************
             // Attempt to create a new container
