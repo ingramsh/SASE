@@ -99,62 +99,6 @@ namespace SASELibrary
             
             return BlobController.CreateContainer(name);
         }
-        public override bool UploadBlockBlob(string container, string filepath)
-        {
-            string filecheck;
-
-            if (!ContainerNameExists(container))
-            {
-                //TODO:  Create exception for submitting a non-existent container
-                return false;
-            }
-
-            filecheck = Path.GetDirectoryName(filepath);
-            if (filecheck == "")
-            {
-                //TODO:  Create exception for submitting an invalid filepath
-                return false;
-            }
-
-            filecheck = Path.GetFileName(filepath);
-            if (filecheck == "")
-            {
-                //TODO:  Create exception for submitting a filepath to a directory instead of a file
-                return false;
-            }
-            /*
-            if (BlobItemExists(container, filecheck))
-            {
-                //TODO:  Create exception for submitting a non-existent blob item
-                Console.WriteLine("INVALID BLOB ITEM");
-                return byteArray = null;
-            }
-            */
-
-            BlobController.UploadBlockBlob(container, filecheck, filepath);
-
-            return true;
-        }
-        public override bool UploadBlockBlobBytes(string container, string name, byte[] file)
-        {
-            if (!ContainerNameExists(container))
-            {
-                //TODO:  Create exception for submitting a non-existent container
-                return false;
-            }
-            /*
-            if (!BlobItemExists(container, name))
-            {
-                //TODO:  Create exception for submitting a non-existent blob item
-                Console.WriteLine("INVALID BLOB ITEM");
-                return byteArray = null;
-            }
-            */
-
-            BlobController.UploadBlockBlobBytes(container, name, file);
-
-            return true;
-        }
         public override bool UploadBlockBlobStream(string container, string name, Stream file)
         {
             if (!ContainerNameExists(container))

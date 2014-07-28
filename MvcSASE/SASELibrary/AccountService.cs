@@ -40,8 +40,7 @@ namespace SASELibrary
         }
         public string storageAccount { get; set; }
         public string storageKey { get; set; }
-        public abstract bool UploadBlockBlob(string container, string filepath);
-        public abstract bool UploadBlockBlobBytes(string container, string name, byte[] file);
+         
         public abstract bool UploadBlockBlobStream(string container, string name, System.IO.Stream file);
         public string userEmail { get; set; }
     }

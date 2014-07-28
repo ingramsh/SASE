@@ -138,30 +138,6 @@ namespace SASELibrary
         {
             return null;
         }
-
-        public override bool UploadBlockBlob(string container, string filepath)
-        {
-
-            PutObjectRequest request = new PutObjectRequest()
-            {
-                BucketName = container,
-                FilePath = filepath,
-                Key = Path.GetFileName(filepath)
-            };
-            return Client.PutObject(request).HttpStatusCode == HttpStatusCode.Accepted;
-        }
-
-        public override bool UploadBlockBlobBytes(string container, string name, byte[] file)
-        {
-            PutObjectRequest request = new PutObjectRequest()
-            {
-                BucketName = container,
-                Key = name
-            };
-            request.InputStream.Write(file, 0, file.Length);
-            return Client.PutObject(request).HttpStatusCode == HttpStatusCode.Accepted;
-        }
-
         public override bool UploadBlockBlobStream(string container, string name, System.IO.Stream file)
         {
 
