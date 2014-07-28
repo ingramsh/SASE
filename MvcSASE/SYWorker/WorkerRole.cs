@@ -18,7 +18,7 @@ namespace SYWorker
     public class WorkerRole : RoleEntryPoint
     {
         private DBContext db = new DBContext();
-        private AccountService sase;
+        private AzureAccountService sase;
         
         private int? uID;
 

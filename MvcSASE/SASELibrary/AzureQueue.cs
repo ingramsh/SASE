@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SASELibrary
 {
-    public class Queue
+    public class AzureQueue
     {
         CloudQueueClient queueClient;
         CloudQueue cloudQueue;
@@ -14,7 +14,7 @@ namespace SASELibrary
         private List<CloudQueue> queueList = new List<CloudQueue>();
 
         // Intended Constructor
-        public Queue(CloudStorageAccount account)
+        public AzureQueue(CloudStorageAccount account)
         {
             queueClient = account.CreateCloudQueueClient();
 
@@ -24,7 +24,7 @@ namespace SASELibrary
                 queueList.Add(cloudQueue);
             }
         }
-        public Queue() { }
+        public AzureQueue() { }
 
         // Returns a list of queues named within the storage account
         public IEnumerable<string> GetQueueNames()

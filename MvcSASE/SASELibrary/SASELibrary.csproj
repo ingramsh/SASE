@@ -71,10 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blob.cs" />
+    <Compile Include="AzureBlob.cs" />
     <Compile Include="DBContext.cs" />
-    <Compile Include="Queue.cs" />
-    <Compile Include="AccountService.cs" />
+    <Compile Include="AzureQueue.cs" />
+    <Compile Include="AzureAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

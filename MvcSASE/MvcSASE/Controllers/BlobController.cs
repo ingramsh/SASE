@@ -12,7 +12,7 @@ namespace MvcSASE.Controllers
 {
     public class BlobController : Controller
     {
-        private AccountService s;
+        private AzureAccountService s;
         private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 

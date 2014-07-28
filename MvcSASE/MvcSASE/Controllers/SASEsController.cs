@@ -37,7 +37,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountService sASE = db.Sase.Find(id);
+            AzureAccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -56,7 +56,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
+        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountService sASE = db.Sase.Find(id);
+            AzureAccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -88,7 +88,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
+        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +106,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountService sASE = db.Sase.Find(id);
+            AzureAccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -119,7 +119,7 @@ namespace MvcSASE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AccountService sASE = db.Sase.Find(id);
+            AzureAccountService sASE = db.Sase.Find(id);
             db.Sase.Remove(sASE);
             db.SaveChanges();
             return RedirectToAction("Index");

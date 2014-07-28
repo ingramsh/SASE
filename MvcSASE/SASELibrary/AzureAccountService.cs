@@ -9,14 +9,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SASELibrary
 {
-    public class AccountService
+    public class AzureAccountService
     {
         private StorageCredentials creds;
         private CloudStorageAccount account;
-        private Blob blob;
-        private Queue queue;
+        private AzureBlob blob;
+        private AzureQueue queue;
 
-        public AccountService() { }
+        public AzureAccountService() { }
+
+        #region SASE CONSTRUCTOR AND CONTROLLER PROPERTIES
         [NotMapped]
         public StorageCredentials Creds
         {
@@ -34,22 +36,22 @@ namespace SASELibrary
             }
         }
         [NotMapped]
-        public Blob BlobController
+        public AzureBlob BlobController
         { 
             get
             {
-                return blob ?? (blob = new Blob(Account));
+                return blob ?? (blob = new AzureBlob(Account));
             }            
         }
         [NotMapped]
-        public Queue QueueController
+        public AzureQueue QueueController
         {
             get
             {
-                return queue ?? (queue = new Queue(Account));
+                return queue ?? (queue = new AzureQueue(Account));
             }
         }
-            
+        #endregion
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
@@ -396,7 +398,7 @@ namespace SASELibrary
         [NotMapped]
         bool active { get; set; }
         [NotMapped]
-        public AccountService service
+        public AzureAccountService service
         {
             get
             {
