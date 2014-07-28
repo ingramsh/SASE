@@ -97,7 +97,10 @@ namespace SASELibrary
         {
             GetObjectResponse response = this.GetDownloadResponse(container, item);
             byte[] byteArray = new byte[response.ContentLength];
-            response.ResponseStream.Read(byteArray, 0, (int)response.ContentLength);
+            using(BinaryReader reader = new BinaryReader(response.ResponseStream))
+            {
+                byteArray = reader.ReadBytes((int) response.ContentLength);
+            }
             return byteArray;
         }
 
