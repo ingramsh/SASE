@@ -56,7 +56,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
+        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AccountService sASE)
+        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
