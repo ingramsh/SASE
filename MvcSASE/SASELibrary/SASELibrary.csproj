@@ -76,13 +76,9 @@
     <Compile Include="DBContext.cs" />
     <Compile Include="AzureQueue.cs" />
     <Compile Include="AzureAccountService.cs" />
-    <Compile Include="Migrations\201407272316282_InitialCreate.cs" />
-    <Compile Include="Migrations\201407272316282_InitialCreate.Designer.cs">
-      <DependentUpon>201407272316282_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407280039535_Inheritance.cs" />
-    <Compile Include="Migrations\201407280039535_Inheritance.Designer.cs">
-      <DependentUpon>201407280039535_Inheritance.cs</DependentUpon>
+    <Compile Include="Migrations\201407280059138_InitialCreate.cs" />
+    <Compile Include="Migrations\201407280059138_InitialCreate.Designer.cs">
+      <DependentUpon>201407280059138_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,11 +89,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407272316282_InitialCreate.resx">
-      <DependentUpon>201407272316282_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407280039535_Inheritance.resx">
-      <DependentUpon>201407280039535_Inheritance.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407280059138_InitialCreate.resx">
+      <DependentUpon>201407280059138_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

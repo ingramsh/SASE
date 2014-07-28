@@ -13,7 +13,7 @@ namespace SASELibrary.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201407272316282_InitialCreate"; }
+            get { return "201407280059138_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

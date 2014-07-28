@@ -12,9 +12,10 @@ namespace SASELibrary.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        userEmail = c.String(),
                         storageAccount = c.String(),
                         storageKey = c.String(),
+                        userEmail = c.String(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.ID);
             
