@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SASELibrary
 {
-    class Queue
+    public class Queue
     {
         CloudQueueClient queueClient;
         CloudQueue cloudQueue;

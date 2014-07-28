@@ -16,21 +16,42 @@ namespace SASELibrary
         private Blob blob;
         private Queue queue;
 
-        // Intended Constructor
-        public AccountService(string name, string key)
-        {
-            creds = new StorageCredentials(name, key);
-            account = new CloudStorageAccount(creds, false);
-            blob = new Blob(account);
-            queue = new Queue(account);
-        }
         public AccountService() { }
+        public StorageCredentials Creds
+        {
+            get
+            {
+                return creds ?? (creds = new StorageCredentials(this.storageAccount, this.storageKey));
+            }
+        }
+        public CloudStorageAccount Account
+        {
+            get
+            {
+                return account ?? (account = new CloudStorageAccount(this.Creds, false));
+            }
+        }
+        public Blob BlobController
+        { 
+            get
+            {
+                return blob ?? (blob = new Blob(Account));
+            }            
+        }
+        public Queue QueueController
+        {
+            get
+            {
+                return queue ?? (queue = new Queue(Account));
+            }
+        }
+            
 
         #region SASE BLOB OPPs
         //---SASE Blob Operations---//
         public IEnumerable<string> BlobContainerNames()
         {
-            return blob.GetContainerNames();
+            return BlobController.GetContainerNames();
         }
         /*public int ContainerCount()
         {
@@ -39,7 +60,7 @@ namespace SASELibrary
         public IEnumerable<string> BlobItemNames(string container)
         {
             List<string> blobNames = new List<String>();
-            foreach (string item in blob.GetBlobItemNames(container))
+            foreach (string item in BlobController.GetBlobItemNames(container))
             {
                 string itemName = "";
                 int slash1 = item.IndexOf("/");
@@ -55,7 +76,7 @@ namespace SASELibrary
         }
         public IEnumerable<string> BlobItems(string container)
         {
-            return blob.GetBlobItemNames(container);
+            return BlobController.GetBlobItemNames(container);
         }
         public bool CreateContainer(string name)
         {
@@ -70,7 +91,7 @@ namespace SASELibrary
                 return false;
             }
             
-            return blob.CreateContainer(name);
+            return BlobController.CreateContainer(name);
         }
         public bool UploadBlockBlob(string container, string filepath)
         {
@@ -104,7 +125,7 @@ namespace SASELibrary
             }
             */
 
-            blob.UploadBlockBlob(container, filecheck, filepath);
+            BlobController.UploadBlockBlob(container, filecheck, filepath);
 
             return true;
         }
@@ -124,7 +145,7 @@ namespace SASELibrary
             }
             */
 
-            blob.UploadBlockBlobBytes(container, name, file);
+            BlobController.UploadBlockBlobBytes(container, name, file);
 
             return true;
         }
@@ -144,7 +165,7 @@ namespace SASELibrary
             }
             */
 
-            blob.UploadBlockBlobStream(container, name, file);
+            BlobController.UploadBlockBlobStream(container, name, file);
 
             return true;
         }
@@ -170,7 +191,7 @@ namespace SASELibrary
             }
             */
 
-            blob.DownloadBlobItem(container, item, filepath);
+            BlobController.DownloadBlobItem(container, item, filepath);
 
             return true;
         }
@@ -190,7 +211,7 @@ namespace SASELibrary
             }
             */
 
-            return blob.DownloadBlobStream(container, item);
+            return BlobController.DownloadBlobStream(container, item);
         }
         public byte[] DownloadBlobBytes(string container, string item)
         {
@@ -210,7 +231,7 @@ namespace SASELibrary
             }
             */
 
-            return byteArray = blob.GetBlobBytes(container, item);
+            return byteArray = BlobController.GetBlobBytes(container, item);
         }
         public BlobInfo BlobInfo(string container, string item)
         {
@@ -228,11 +249,11 @@ namespace SASELibrary
             }
             */
 
-            return blob.BlobInfo(container, item);
+            return BlobController.BlobInfo(container, item);
         }
         private bool ContainerNameExists(string name)
         {
-            foreach (string container in blob.GetContainerNames())
+            foreach (string container in BlobController.GetContainerNames())
                 if (container == name)
                     return true;
 
@@ -240,7 +261,7 @@ namespace SASELibrary
         }
         private bool BlobItemExists(string container, string item)
         {
-            foreach (string blobName in blob.GetBlobItemNames(container))
+            foreach (string blobName in BlobController.GetBlobItemNames(container))
             {
                 /*string itemName = "";
                 int slash1 = blobName.IndexOf("/");
@@ -267,7 +288,7 @@ namespace SASELibrary
         //---SASE Queue Operations---//
         public IEnumerable<string> QueueNames()
         {
-            return queue.GetQueueNames();
+            return QueueController.GetQueueNames();
         }
         public int QueueCount()
         {
@@ -281,7 +302,7 @@ namespace SASELibrary
                 return -1;
             }
 
-            return queue.GetMessageCount(name);
+            return QueueController.GetMessageCount(name);
         }
         public bool CreateQueue(string name)
         {
@@ -296,7 +317,7 @@ namespace SASELibrary
                 return false;
             } 
 
-            return queue.CreateQueue(name);
+            return QueueController.CreateQueue(name);
         }
         public bool EnqueueMessage(string name, string message)
         {
@@ -306,7 +327,7 @@ namespace SASELibrary
                 return false;
             }
 
-            return queue.EnqueueMessage(name, message);
+            return QueueController.EnqueueMessage(name, message);
         }
         public string DequeueMessage(string name)
         {
@@ -317,13 +338,13 @@ namespace SASELibrary
                 //TODO:  Create exception for attempting to dequeue a queue that does not exist
                 return message;
             }
-            if (queue.GetMessageCount(name) == 0)
+            if (QueueController.GetMessageCount(name) == 0)
             {
                 //TODO:  Create exception for attempting to dequeue and empty queue
                 return message;
             }
 
-            message = queue.DequeueMessage(name);
+            message = QueueController.DequeueMessage(name);
 
             return message;
         }
@@ -337,19 +358,19 @@ namespace SASELibrary
                 //TODO:  Create exception for attempting to peek a queue that does not exist  
                 return null;
             }
-            if (queue.GetMessageCount(name) == 0)
+            if (QueueController.GetMessageCount(name) == 0)
             {
                 //TODO:  Create exception for attempting to peek and empty queue
                 return null;
             }
 
-            peek = queue.PeekMessage(name);
+            peek = QueueController.PeekMessage(name);
 
-            return queue.PeekMessage(name);
+            return QueueController.PeekMessage(name);
         }
         private bool QueueNameExists(string name)
         {
-            foreach (string queueLabel in queue.GetQueueNames())
+            foreach (string queueLabel in QueueController.GetQueueNames())
                 if (queueLabel == name)
                     return true;
 
@@ -375,7 +396,7 @@ namespace SASELibrary
         {
             get
             {
-                return new SASELibrary.AccountService(this.storageAccount, this.storageKey);
+                return this;
             }
         }
         public int ID { get; set; }

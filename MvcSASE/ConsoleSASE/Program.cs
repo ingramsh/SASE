@@ -16,7 +16,7 @@ namespace ConsoleSASE
             string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";
 
             // Creates account service class from SASE library
-            AccountService sase = new AccountService(name, key);
+            AccountService sase = new AccountService() { storageAccount = name, storageKey = key };
 
             /********************************************
             // Attempt to create a new container
@@ -48,7 +48,7 @@ namespace ConsoleSASE
             ********************************************/
 
             // List all blob containers by name and their blob items
-            Console.WriteLine("The blob containers and their contents on this storage account are:\n");
+            Console.WriteLine("The BlobController containers and their contents on this storage account are:\n");
             foreach (string container in sase.BlobContainerNames())
             {
                 Console.WriteLine(container);
@@ -71,8 +71,8 @@ namespace ConsoleSASE
 
             //^^Blobs^^===============================================================================================================vvQueuesvv//
             
-            string queueName = "sase-test-queue";
-            string message = "this is a test MeSsAgE for the SASE Service queue";
+            string queueName = "sase-test-QueueController";
+            string message = "this is a test MeSsAgE for the SASE Service QueueController";
 
             /********************************************
             // Create a new storage queue titeled with 'queueName'
@@ -84,7 +84,7 @@ namespace ConsoleSASE
             ********************************************/
 
             // Enqueue a 'message' to 'queueName'
-            Console.WriteLine("\n\nAttempting to enqueue the message: " + message + "\nTo queue: " + queueName);
+            Console.WriteLine("\n\nAttempting to enqueue the message: " + message + "\nTo QueueController: " + queueName);
             if (sase.EnqueueMessage(queueName, message))
                 Console.WriteLine("Succeeded!\n");
             else
@@ -120,7 +120,7 @@ namespace ConsoleSASE
                 Console.WriteLine("Succeeded: " + dequeueMessage);
 
             // List all storage queues by name and their approximate message count
-            Console.WriteLine("\nThe queue names on this storage account are:");
+            Console.WriteLine("\nThe QueueController names on this storage account are:");
             foreach (string container in sase.QueueNames())
             {
                 Console.Write(container);
