@@ -5,14 +5,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using SASELibrary;
 
 
 namespace MvcSASE.Controllers
 {
     public class BlobController : Controller
     {
-        private SASE s;
-        private SASEDBContext db = new SASEDBContext();
+        private AccountService s;
+        private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: Blob
@@ -27,7 +28,7 @@ namespace MvcSASE.Controllers
             s.blobID = blobid;
 
             if (blobid >= 0)
-                s.blobInfo = s.service.BlobInfo(containername, s.service.BlobItemNames(containername)[blobid]);
+                s.blobInfo = s.service.BlobInfo(containername, s.service.BlobItemNames(containername).ElementAt(blobid));
 
             CheckLogin();
 
@@ -47,7 +48,7 @@ namespace MvcSASE.Controllers
 
             if (file != null && file.ContentLength > 0)
             {
-                string name = file.FileName;
+                string name = Path.GetFileName(file.FileName);
                 //Byte[] convert = new Byte[file.ContentLength];
                 file.InputStream.Position = 0;
                 //file.InputStream.Read(convert, 0, file.ContentLength);
@@ -70,7 +71,7 @@ namespace MvcSASE.Controllers
             s.blobID = -1;
             CheckLogin();
 
-            string fileName = s.service.BlobItemNames(containername)[blobid];
+            string fileName = s.service.BlobItemNames(containername).ElementAt(blobid);
             byte[] file = s.service.DownloadBlobBytes(containername, fileName);
 
             return File(file, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);

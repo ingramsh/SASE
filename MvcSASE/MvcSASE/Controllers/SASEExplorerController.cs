@@ -1,4 +1,5 @@
 ﻿using MvcSASE.Models;
+using SASELibrary;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -6,8 +7,8 @@ namespace MvcSASE.Controllers
 {
     public class SASEExplorerController : Controller
     {
-        private SASE s;
-        private SASEDBContext db = new SASEDBContext();
+        private AccountService s;
+        private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: SASEExplorer

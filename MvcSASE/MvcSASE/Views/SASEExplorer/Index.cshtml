@@ -1,4 +1,4 @@
-﻿@model MvcSASE.Models.SASE
+﻿@model SASELibrary.AccountService
 
 @{
     ViewBag.Title = "Index";
@@ -11,7 +11,7 @@
     @for (int i = 0; i < Model.service.BlobContainerNames().Count(); i++)
     {
         <p />
-    <a href="/Blob/Index?containername=@Model.service.BlobContainerNames()[i]&saseid=@Model.passID&blobid=-1">@Model.service.BlobContainerNames()[i]</a>
+    <a href="/Blob/Index?containername=@Model.service.BlobContainerNames().ElementAt(i)&saseid=@Model.passID&blobid=-1">@Model.service.BlobContainerNames().ElementAt(i)</a>
         @(" (");
         @Model.service.BlobItems(Model.service.BlobContainerNames().ElementAt(i)).Count();
         @(")  ");
@@ -34,7 +34,7 @@
     @for (int i = 0; i < Model.service.QueueCount(); i++)
     {
         <p />
-        <a href="/SASEExplorer/Queue?queuename=@Model.service.QueueNames()[i]&saseid=@Model.passID">@Model.service.QueueNames()[i]</a>
+        <a href="/SASEExplorer/Queue?queuename=@Model.service.QueueNames().ElementAt(i)&saseid=@Model.passID">@Model.service.QueueNames().ElementAt(i)</a>
             @(" (");
             @Model.service.QueueMessageCount(Model.service.QueueNames().ElementAt(i));
             @(")  ");
