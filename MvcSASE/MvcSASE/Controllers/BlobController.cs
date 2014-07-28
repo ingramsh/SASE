@@ -48,7 +48,7 @@ namespace MvcSASE.Controllers
 
             if (file != null && file.ContentLength > 0)
             {
-                string name = file.FileName;
+                string name = Path.GetFileName(file.FileName);
                 //Byte[] convert = new Byte[file.ContentLength];
                 file.InputStream.Position = 0;
                 //file.InputStream.Read(convert, 0, file.ContentLength);

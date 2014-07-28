@@ -175,32 +175,6 @@ namespace SASELibrary
 
             return true;
         }
-        public override bool DownloadBlobBlock(string container, string item, string filepath)
-        {
-            string filecheck = Path.GetDirectoryName(filepath);
-            if (filecheck == "")
-            {
-                //TODO:  Create exception for submitting an invalid filepath
-                return false;
-            }
-            if (!ContainerNameExists(container))
-            {
-                //TODO:  Create exception for submitting a non-existent container
-                return false;
-            }
-            /*
-            if (!BlobItemExists(container, item))
-            {
-                //TODO:  Create exception for submitting a non-existent blob item
-                Console.WriteLine("INVALID BLOB ITEM");
-                return false;
-            }
-            */
-
-            BlobController.DownloadBlobItem(container, item, filepath);
-
-            return true;
-        }
         public override Stream DownloadBlobStream(string container, string item)
         {
             if (!ContainerNameExists(container))

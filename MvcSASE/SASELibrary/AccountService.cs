@@ -19,7 +19,6 @@ namespace SASELibrary
         public abstract bool CreateContainer(string name);
         public abstract bool CreateQueue(string name);
         public abstract string DequeueMessage(string name);
-        public abstract bool DownloadBlobBlock(string container, string item, string filepath);
         public abstract byte[] DownloadBlobBytes(string container, string item);
         public abstract System.IO.Stream DownloadBlobStream(string container, string item);
         public abstract bool EnqueueMessage(string name, string message);
