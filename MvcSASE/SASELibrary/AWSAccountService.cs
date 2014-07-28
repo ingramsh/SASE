@@ -5,19 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.SQS;
 using System.Net;
 using System.IO;
 using Amazon.Runtime;
+using Amazon.SQS.Model;
 namespace SASELibrary
 {
     public class AWSAccountService : AccountService
     {
         private IAmazonS3 client;
+        private IAmazonSQS sqsClient;
         public IAmazonS3 Client
         {
             get
             {
                 return client ?? (client = new AmazonS3Client(this.Creds, Amazon.RegionEndpoint.USEast1));
+            }
+        }
+        public IAmazonSQS SQSClient
+        {
+            get
+            {
+                return sqsClient ?? (sqsClient = new AmazonSQSClient(Creds, Amazon.RegionEndpoint.USWest2));
             }
         }
         public BasicAWSCredentials Creds
@@ -60,7 +70,7 @@ namespace SASELibrary
         public override IEnumerable<string> BlobItemNames(string container)
         {
             S3Bucket bucket = this.Buckets.Where(b => b.BucketName == container).FirstOrDefault();
-            
+
             ListObjectsRequest request = new ListObjectsRequest()
             {
                 BucketName = container
@@ -80,26 +90,42 @@ namespace SASELibrary
             {
                 BucketName = name
             };
-            return Client.PutBucket(request).HttpStatusCode == HttpStatusCode.Accepted;
+            return Client.PutBucket(request).HttpStatusCode == HttpStatusCode.OK;
         }
 
         public override bool CreateQueue(string name)
         {
-            throw new NotImplementedException();
+            CreateQueueRequest request = new CreateQueueRequest()
+            {
+                QueueName = name
+            };
+            return SQSClient.CreateQueue(request).HttpStatusCode == HttpStatusCode.OK;
         }
 
         public override string DequeueMessage(string name)
         {
-            throw new NotImplementedException();
+            ReceiveMessageRequest request = new ReceiveMessageRequest()
+            {
+                QueueUrl = name
+            };
+            
+            Amazon.SQS.Model.Message message = SQSClient.ReceiveMessage(request).Messages[0];
+            DeleteMessageRequest deleterequest = new DeleteMessageRequest()
+            {
+                QueueUrl = name,
+                ReceiptHandle = message.ReceiptHandle
+            };
+            SQSClient.DeleteMessage(deleterequest);
+            return message.Body;
         }
 
         public override byte[] DownloadBlobBytes(string container, string item)
         {
             GetObjectResponse response = this.GetDownloadResponse(container, item);
             byte[] byteArray = new byte[response.ContentLength];
-            using(BinaryReader reader = new BinaryReader(response.ResponseStream))
+            using (BinaryReader reader = new BinaryReader(response.ResponseStream))
             {
-                byteArray = reader.ReadBytes((int) response.ContentLength);
+                byteArray = reader.ReadBytes((int)response.ContentLength);
             }
             return byteArray;
         }
@@ -119,27 +145,60 @@ namespace SASELibrary
         }
         public override bool EnqueueMessage(string name, string message)
         {
-            return true;
+            SendMessageRequest request = new SendMessageRequest()
+            {
+                MessageBody = message,
+                QueueUrl = name
+            };
+            return SQSClient.SendMessage(request).HttpStatusCode == HttpStatusCode.OK;
         }
 
         public override Message PeekMessage(string name)
         {
-            return null;
+            ReceiveMessageRequest request = new ReceiveMessageRequest()
+            {
+                QueueUrl = name
+            };
+            List<Amazon.SQS.Model.Message> messages = SQSClient.ReceiveMessage(request).Messages;
+            if (messages.Count > 0)
+            {
+                Amazon.SQS.Model.Message message = messages[0];
+                return new Message()
+                {
+                    ExpirationTime = "none",
+                    MessageString = message.Body
+                };
+            }
+            return new Message()
+            {
+                ExpirationTime = string.Empty,
+                MessageString = string.Empty,
+                NextVisibleTime = string.Empty,
+                DequeueCount = string.Empty
+            };
         }
 
         public override int QueueCount()
         {
-            return 0;
+            return this.QueueNames().ToList<string>().Count;
         }
 
         public override int QueueMessageCount(string name)
         {
-            return 0;
+            ReceiveMessageRequest request = new ReceiveMessageRequest()
+            {
+                QueueUrl = name
+            };
+            return SQSClient.ReceiveMessage(request).Messages.Count;
         }
 
         public override IEnumerable<string> QueueNames()
         {
-            return null;
+            ListQueuesRequest request = new ListQueuesRequest()
+            {
+
+            };
+            return SQSClient.ListQueues(request).QueueUrls;
         }
         public override bool UploadBlockBlobStream(string container, string name, System.IO.Stream file)
         {
@@ -150,7 +209,7 @@ namespace SASELibrary
                 Key = name,
                 InputStream = file
             };
-            return Client.PutObject(request).HttpStatusCode == HttpStatusCode.Accepted;
+            return Client.PutObject(request).HttpStatusCode == HttpStatusCode.OK;
         }
     }
 }
