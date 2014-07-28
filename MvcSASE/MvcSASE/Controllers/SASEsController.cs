@@ -55,7 +55,36 @@ namespace MvcSASE.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        public ActionResult Create(string storageAccount, string storageKey, string userEmail, string accountType)
+        {
+            if (accountType == "Azure")
+            {
+                AzureAccountService sASE = new AzureAccountService()
+                {
+                    storageAccount = storageAccount,
+                    storageKey = storageKey,
+                    userEmail = userEmail
+                };
+
+                db.Sase.Add(sASE);
+                db.SaveChanges();
+            }
+            else if (accountType == "AWS")
+            {
+                AWSAccountService sASE = new AWSAccountService()
+                {
+                    storageAccount = storageAccount,
+                    storageKey = storageKey,
+                    userEmail = userEmail
+                };
+
+                db.Sase.Add(sASE);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        /*[ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
@@ -66,7 +95,7 @@ namespace MvcSASE.Controllers
             }
 
             return View(sASE);
-        }
+        }*/
 
         // GET: SASEs/Edit/5
         public ActionResult Edit(int? id)
