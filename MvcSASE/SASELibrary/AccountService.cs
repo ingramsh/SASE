@@ -17,6 +17,7 @@ namespace SASELibrary
         private Queue queue;
 
         public AccountService() { }
+        [NotMapped]
         public StorageCredentials Creds
         {
             get
@@ -24,6 +25,7 @@ namespace SASELibrary
                 return creds ?? (creds = new StorageCredentials(this.storageAccount, this.storageKey));
             }
         }
+        [NotMapped]
         public CloudStorageAccount Account
         {
             get
@@ -31,6 +33,7 @@ namespace SASELibrary
                 return account ?? (account = new CloudStorageAccount(this.Creds, false));
             }
         }
+        [NotMapped]
         public Blob BlobController
         { 
             get
@@ -38,6 +41,7 @@ namespace SASELibrary
                 return blob ?? (blob = new Blob(Account));
             }            
         }
+        [NotMapped]
         public Queue QueueController
         {
             get
