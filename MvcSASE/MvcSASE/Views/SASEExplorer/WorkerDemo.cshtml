@@ -1,0 +1,31 @@
+﻿@model SASELibrary.AccountService
+
+@{
+    ViewBag.Title = "WorkerDemo";
+}
+
+<h2>Worker Role Demonstration</h2>
+<p />
+<h4>Summary:</h4>
+<p />
+<p>
+    Azure Cloud Services provides the ability to create and design worker roles within the Azure Cloud.  For this demonstration I've created a worker role that will read from a designated queue 
+        inside the user's storage account to retrieve a youtube video address.  Once the worker role has acquired the youtube address it will dequeue the message and goto work.  The desired 
+        outcome of this demonstration is to have the worker role successfully extract a youtube video file and to store it in the user's account as an mp4 file in a designated blob container.  <br /><br />
+    The worker role is not allowed to extract video files from a youtube address that is copyrighted in the US.  Also not all youtube video's are able to be extracted as an mp4 file.  Therefore, 
+        there is the possibility of failure for the worker role.  To demonstrate this success/failure routine there will be an additional output queue designated to receives a completion message from
+        the worker role.  The output message will either state that the file extraction was a success or why the extraction failed.<br /><br />
+    Read the instructions below for the procedure to operate this Azure Worker Role demonstration.
+</p>
+<hr />
+<h4>Instructions:</h4>
+<p>
+    1. Create a new queue named: <b>sase-youtube-in</b><br />
+    2. Open the queue and enqueue a new message with a youtube video url<br />
+    3. If the worker role is currently online you will receive an output message regarding the completion of your request in the queue named: <b>sase-youtube-out</b><br />
+    4. If the completion status states "--extraction completed", you will receive a mp4 file of the youtube video in the blob container: <b>sase-youtube-videos</b><br /><br />
+    Notes:  If the worker is currently online, the request will usually take two minutes at the most to process.  Otherwise the worker role will attend to the request when it is next activated.<br />
+    (The output queue and container will be created in your storage account if they do not already exist.)
+</p>
+<hr/>
+<a href="/SASEExplorer/Index/@Model.passID">Back to Explorer</a>

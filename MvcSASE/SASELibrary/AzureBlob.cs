@@ -3,13 +3,11 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace SASELibrary
 {
-    public class AzureBlob : Blob
+    public class AzureBlob
     {
         private CloudBlobClient blobClient;        
         private CloudBlobContainer blobContainer;
@@ -32,26 +30,28 @@ namespace SASELibrary
         public AzureBlob() { }
 
         // Returns a list of container names within the storage account
-        public override IEnumerable<string> GetContainerNames()
+        public IEnumerable<string> GetContainerNames()
         {
-            foreach (CloudBlobContainer container in containerList)
-            {
-                yield return container.Name;
-            }
+            return containerList.Select(t => t.Name);
         }
 
         // Returns a list of blob items via their URI
-        public override IEnumerable<string> GetBlobItemNames(string container)
+        public IEnumerable<string> GetBlobItemNames(string container)
         {
             blobContainer = blobClient.GetContainerReference(container);
             blobContainer.CreateIfNotExists();
 
-            return blobContainer.ListBlobs().Select(x=>DecodeURL(x.Uri.ToString()));
-            
+            IEnumerable<IListBlobItem> blobItems = blobContainer.ListBlobs();
+            foreach (IListBlobItem blobItem in blobItems)
+            {
+                string fix = blobItem.Uri.AbsolutePath.ToString();
+                fix = fix.Replace("%20", " ");
+                yield return fix.Replace("%22", "\"");
+            }
         }
 
         // Creates a new container with reference 'name'
-        public override bool CreateContainer(string name)
+        public bool CreateContainer(string name)
         {
             bool created = false;
 
@@ -65,7 +65,7 @@ namespace SASELibrary
         }
 
         // Creates a new blob block from a file on user's computer
-        public override void UploadBlockBlob(string container, string name, string filepath)
+        public void UploadBlockBlob(string container, string name, string filepath)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
@@ -74,7 +74,7 @@ namespace SASELibrary
         }
 
         // Create a new blob block from a byte array
-        public override void UploadBlockBlobBytes(string container, string name, byte[] file)
+        public void UploadBlockBlobBytes(string container, string name, byte[] file)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
@@ -83,7 +83,7 @@ namespace SASELibrary
         }
 
         // Create a new blob block from a file stream
-        public override void UploadBlockBlobStream(string container, string name, Stream file)
+        public void UploadBlockBlobStream(string container, string name, Stream file)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
@@ -92,7 +92,7 @@ namespace SASELibrary
         }
 
         // Retrieve a blob item's byte code
-        public override byte[] GetBlobBytes(string container, string item)
+        public byte[] GetBlobBytes(string container, string item)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
@@ -110,7 +110,7 @@ namespace SASELibrary
         }
 
         // Download a blob item to specified file path
-        public override void DownloadBlobItem(string container, string item, string filepath)
+        public void DownloadBlobItem(string container, string item, string filepath)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
@@ -119,7 +119,7 @@ namespace SASELibrary
         }
 
         // Download a blob item as a Stream
-        public override Stream DownloadBlobStream(string container, string item)
+        public Stream DownloadBlobStream(string container, string item)
         {
             Stream s = new MemoryStream();
 
@@ -132,17 +132,29 @@ namespace SASELibrary
             return s;
         }
 
-        public override IEnumerable<string> BlobInfo(string container, string item)
+        public BlobInfo BlobInfo(string container, string item)
         {
             blobContainer = blobClient.GetContainerReference(container);
             CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
 
             blob.FetchAttributes();
 
-            yield return blob.Properties.BlobType.ToString();
-            yield return blob.Properties.Length.ToString();
-            yield return blob.Properties.LastModified.ToString();
-            yield return blob.Uri.ToString();
+            BlobInfo blobinfo = new BlobInfo()
+            {
+                BlobType = blob.Properties.BlobType.ToString(),
+                Length = blob.Properties.Length.ToString(),
+                LastModified = blob.Properties.LastModified.ToString(),
+                BlobLocation = blob.Uri.ToString()
+            };
+
+            return blobinfo;
         }
+    }
+    public class BlobInfo
+    {
+        public string BlobType { get; set; }
+        public string Length { get; set; }
+        public string LastModified { get; set; }
+        public string BlobLocation { get; set; }
     }
 }

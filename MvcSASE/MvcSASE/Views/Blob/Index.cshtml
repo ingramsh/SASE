@@ -1,4 +1,4 @@
-﻿@model MvcSASE.Models.SASE
+﻿@model SASELibrary.AccountService
 
 @{
     ViewBag.Title = "Index";
@@ -8,22 +8,22 @@
 <p />
 <h4>Blobs Items:</h4>
 <form>
-    @for (int i = 0; i < Model.service.SASEBlobItemNames(Model.containerName).Count(); i++)
+    @for (int i = 0; i < Model.service.BlobItemNames(Model.containerName).Count(); i++)
     {
         <p>
-            @Model.service.SASEBlobItemNames(Model.containerName)[i]
-            - <a href="/Blob/Index?containername=@Model.containerName&itemname=@Model.service.SASEBlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
+            @Model.service.BlobItemNames(Model.containerName).ElementAt(i)
+            - <a href="/Blob/Index?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName).ElementAt(i)&saseid=@Model.passID&blobid=@i">
                 Inspect</a> |
-            <a href="/Blob/Download?containername=@Model.containerName&itemname=@Model.service.SASEBlobItemNames(Model.containerName)[i]&saseid=@Model.passID&blobid=@i">
+            <a href="/Blob/Download?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName).ElementAt(i)&saseid=@Model.passID&blobid=@i">
                 Download</a>
         </p>
         if (i == Model.blobID)
         {
             <p>
-                Type: @Model.blobInfo[0] | 
-                Length: @Model.blobInfo[1] | 
-                Modified: @Model.blobInfo[2] | 
-                URI: @Model.blobInfo[3]
+                Type: @Model.blobInfo.BlobType | 
+                Length: @Model.blobInfo.Length | 
+                Modified: @Model.blobInfo.LastModified | 
+                URI: @Model.blobInfo.BlobLocation
             </p>
         }
     }

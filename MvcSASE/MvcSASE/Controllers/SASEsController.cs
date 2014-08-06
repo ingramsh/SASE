@@ -8,12 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using MvcSASE.Models;
 using Microsoft.AspNet.Identity;
+using SASELibrary;
 
 namespace MvcSASE.Controllers
 {
     public class SASEsController : Controller
     {
-        private SASEDBContext db = new SASEDBContext();
+        private DBContext db = new DBContext();
         string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: SASEs
@@ -36,7 +37,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StorageAccount sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -54,8 +55,37 @@ namespace MvcSASE.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] StorageAccount sASE)
+        public ActionResult Create(string storageAccount, string storageKey, string userEmail, string accountType)
+        {
+            if (accountType == "Azure")
+            {
+                AzureAccountService sASE = new AzureAccountService()
+                {
+                    storageAccount = storageAccount,
+                    storageKey = storageKey,
+                    userEmail = userEmail
+                };
+
+                db.Sase.Add(sASE);
+                db.SaveChanges();
+            }
+            else if (accountType == "AWS")
+            {
+                AWSAccountService sASE = new AWSAccountService()
+                {
+                    storageAccount = storageAccount,
+                    storageKey = storageKey,
+                    userEmail = userEmail
+                };
+
+                db.Sase.Add(sASE);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        /*[ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +95,7 @@ namespace MvcSASE.Controllers
             }
 
             return View(sASE);
-        }
+        }*/
 
         // GET: SASEs/Edit/5
         public ActionResult Edit(int? id)
@@ -74,7 +104,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StorageAccount sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -87,7 +117,7 @@ namespace MvcSASE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] StorageAccount sASE)
+        public ActionResult Edit([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +135,7 @@ namespace MvcSASE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StorageAccount sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             if (sASE == null)
             {
                 return HttpNotFound();
@@ -118,7 +148,7 @@ namespace MvcSASE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            StorageAccount sASE = db.Sase.Find(id);
+            AccountService sASE = db.Sase.Find(id);
             db.Sase.Remove(sASE);
             db.SaveChanges();
             return RedirectToAction("Index");

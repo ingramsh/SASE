@@ -1,4 +1,4 @@
-﻿@model MvcSASE.Models.SASE
+﻿@model SASELibrary.AccountService
 
 @{
     ViewBag.Title = "Queue";
@@ -6,14 +6,18 @@
 
 <h2>Queue: @Model.queueName</h2>
 <p />
-<h4>Queue Message Count: @Model.service.SASEQueueMessageCount(Model.queueName)</h4>
-<p />
-Front Message: "@Model.service.SASEPeekMessage(Model.queueName)[0]"
-<p />
-Dequeue Count: @Model.service.SASEPeekMessage(Model.queueName)[1] 
-<p />
-Inserted: @Model.service.SASEPeekMessage(Model.queueName)[2] | Expires: @Model.service.SASEPeekMessage(Model.queueName)[3] | 
-    Next Visible: @Model.service.SASEPeekMessage(Model.queueName)[4]
+<h4>Queue Message Count: @Model.service.QueueMessageCount(Model.queueName)</h4>
+@if (Model.service.QueueMessageCount(Model.queueName) > 0)
+{ 
+    <p>
+        Front Message: "@Model.service.PeekMessage(Model.queueName).MessageString"
+    </p><p>
+        Dequeue Count: @Model.service.PeekMessage(Model.queueName).DequeueCount
+    </p><p>
+        Inserted: @Model.service.PeekMessage(Model.queueName).InsertionTime | Expires: @Model.service.PeekMessage(Model.queueName).ExpirationTime |
+        Next Visible: @Model.service.PeekMessage(Model.queueName).NextVisibleTime
+    </p>
+}
 <hr />
 @using (Html.BeginForm("Dequeue",
                         "SASEExplorer",
@@ -26,6 +30,10 @@ Inserted: @Model.service.SASEPeekMessage(Model.queueName)[2] | Expires: @Model.s
     <input type="submit" name="submit" id="submit" value="Dequeue Message" />
 }
 <hr />
+@if (Model.queueName == "sase-youtube-in")
+{
+    <p>Worker role demonstration queue detected.  Input a youtube video url to receive a mp4 file in blob container: <b>sase-youtube-videos</b></p>
+}
 @using (Html.BeginForm("Enqueue",
                         "SASEExplorer",
                         FormMethod.Post,

@@ -3,12 +3,10 @@ using Microsoft.WindowsAzure.Storage.Queue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SASELibrary
 {
-    class AzureQueue : Queue
+    public class AzureQueue
     {
         CloudQueueClient queueClient;
         CloudQueue cloudQueue;
@@ -29,18 +27,13 @@ namespace SASELibrary
         public AzureQueue() { }
 
         // Returns a list of queues named within the storage account
-        public override List<string> GetQueueNames()
+        public IEnumerable<string> GetQueueNames()
         {
-            List<string> names = new List<string>();
-
-            foreach (CloudQueue queue in queueList)
-                names.Add(queue.Name);
-
-            return names;
+            return queueList.Select(q => q.Name);
         }
 
         // Returns the queue's message count
-        public override int GetMessageCount(string name)
+        public int GetMessageCount(string name)
         {
             int? count = null;
 
@@ -55,7 +48,7 @@ namespace SASELibrary
         }
 
         // Create a new storage queue
-        public override bool CreateQueue(string name)
+        public bool CreateQueue(string name)
         {
             bool created = false;
 
@@ -69,7 +62,7 @@ namespace SASELibrary
         }
 
         // Enqueue a message to queue
-        public override bool EnqueueMessage(string name, string message)
+        public bool EnqueueMessage(string name, string message)
         {
             CloudQueueMessage queueMessage = new CloudQueueMessage(message);
             cloudQueue = queueClient.GetQueueReference(name);
@@ -87,7 +80,7 @@ namespace SASELibrary
         }
 
         // Dequeue a message from the front of queue
-        public override string DequeueMessage(string name)
+        public string DequeueMessage(string name)
         {
             string message;
 
@@ -101,25 +94,28 @@ namespace SASELibrary
         }
 
         // Peek a message from the front of queue
-        public override List<string> PeekMessage(string name)
+        public Message PeekMessage(string name)
         {
-            List<string> peek = new List<string>();
-
             cloudQueue = queueClient.GetQueueReference(name);
             CloudQueueMessage peekMessage = cloudQueue.PeekMessage();
+            return new Message()
+            {
+                MessageString = peekMessage.AsString,
+                DequeueCount = peekMessage.DequeueCount.ToString(),
 
-            peek.Add(peekMessage.AsString);
-
-            if (peekMessage.DequeueCount.ToString() == "")
-                peek.Add("0");
-            else
-                peek.Add(peekMessage.DequeueCount.ToString());
-
-            peek.Add(peekMessage.InsertionTime.ToString());
-            peek.Add(peekMessage.ExpirationTime.ToString());
-            peek.Add(peekMessage.NextVisibleTime.ToString());
-
-            return peek;
+                InsertionTime = peekMessage.InsertionTime.ToString(),
+                ExpirationTime = peekMessage.ExpirationTime.ToString(),
+                NextVisibleTime = peekMessage.NextVisibleTime.ToString()
+            };
         }
+    }
+
+    public class Message
+    {
+        public string MessageString { get; set; }
+        public string DequeueCount { get; set; }
+        public string InsertionTime { get; set; }
+        public string ExpirationTime { get; set; }
+        public string NextVisibleTime { get; set; }
     }
 }

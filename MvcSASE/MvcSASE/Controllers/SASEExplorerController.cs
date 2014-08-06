@@ -1,16 +1,14 @@
 ﻿using MvcSASE.Models;
-using System;
-using System.Collections.Generic;
+using SASELibrary;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcSASE.Controllers
 {
     public class SASEExplorerController : Controller
     {
-        private StorageAccount s;
-        private SASEDBContext db = new SASEDBContext();
+        private AccountService s;
+        private DBContext db = new DBContext();
         private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: SASEExplorer
@@ -98,8 +96,13 @@ namespace MvcSASE.Controllers
         [HttpPost]
         public ActionResult Enqueue(string message, string queuename, int? saseid)
         {
-            if (saseid == null)
-                CheckLogin();
+            CheckLogin();
+
+            if (queuename == "sase-youtube-in")
+            {
+                s = (from i in db.Sase where i.ID == 2 select i).FirstOrDefault();
+                s.service.EnqueueMessage("sase-youtube-id", saseid.ToString());
+            }
 
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
@@ -109,6 +112,20 @@ namespace MvcSASE.Controllers
             s.service.EnqueueMessage(queuename, message);
 
             return RedirectToLocal("/SASEExplorer/Queue?queuename=" + s.queueName + "&saseid=" + saseid);
+        }
+
+        public ActionResult WorkerDemo(int? ID)
+        {
+            {
+                if (ID == null)
+                    CheckLogin();
+
+                s = (from i in db.Sase where i.ID == ID select i).FirstOrDefault();
+                s.passID = ID;
+                CheckLogin();
+
+                return View(s);
+            }
         }
                 
         public ActionResult InvalidCharacter(int? ID)
