@@ -186,3 +186,9 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+MvcSASE/MvcSASE/Models/Controllers/AccountController.cs
+MvcSASE/MvcSASE/Models/Controllers/BlobController.cs
+MvcSASE/MvcSASE/Models/Controllers/HomeController.cs
+MvcSASE/MvcSASE/Models/Controllers/SASEExplorerController.cs
+MvcSASE/MvcSASE/Models/Controllers/SASEsController.cs
+MvcSASE/MvcSASE/Models/Controllers/Startup.Auth.cs
