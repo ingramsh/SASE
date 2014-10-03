@@ -1,22 +1,18 @@
-﻿using SASELibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using SASELibrary;
 
 namespace ConsoleSASE
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // Raw cloud storage account credentials
             string name = "daowna";
             string key = "wuG0USYr/U+x6i6r8KojOXfZOL5qWQQdAgDGnt2V+lSyyW2Rv74BY4IdJz+5i45pbBbz+5gH/eCcDpy7Fn9qwA==";
 
             // Creates account service class from SASE library
-            AzureAccountService sase = new AzureAccountService() { storageAccount = name, storageKey = key };
+            var sase = new AzureAccountService {storageAccount = name, storageKey = key};
 
             /********************************************
             // Attempt to create a new container
@@ -70,7 +66,7 @@ namespace ConsoleSASE
             }
 
             //^^Blobs^^===============================================================================================================vvQueuesvv//
-            
+
             string queueName = "sase-test-QueueController";
             string message = "this is a test MeSsAgE for the SASE Service QueueController";
 
@@ -89,7 +85,7 @@ namespace ConsoleSASE
                 Console.WriteLine("Succeeded!\n");
             else
                 Console.WriteLine("Failed..\n");
-            
+
             /*
             // Peek the first message of 'queueName'
             List<string> peekMessage = sase.PeekMessage(queueName);
@@ -107,7 +103,7 @@ namespace ConsoleSASE
                 Console.WriteLine("Next Visible In: \t" + peekMessage.ElementAt(4));
             Console.WriteLine('\n');
             */
-            
+
 
             // Dequeue the first message of 'queueName'
             string dequeueMessage = null;
@@ -124,7 +120,7 @@ namespace ConsoleSASE
             foreach (string container in sase.QueueNames())
             {
                 Console.Write(container);
-                Console.WriteLine("\t\tMessage Count: " + sase.QueueMessageCount(container).ToString());
+                Console.WriteLine("\t\tMessage Count: " + sase.QueueMessageCount(container));
             }
 
             // End of program.  Keeps console window open.

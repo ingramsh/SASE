@@ -1,15 +1,14 @@
-﻿using MvcSASE.Models;
-using SASELibrary;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using SASELibrary;
 
 namespace MvcSASE.Controllers
 {
     public class SASEExplorerController : Controller
     {
+        private readonly string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
+        private readonly DBContext db = new DBContext();
         private AccountService s;
-        private DBContext db = new DBContext();
-        private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: SASEExplorer
         public ActionResult Index(int? ID)
@@ -34,14 +33,11 @@ namespace MvcSASE.Controllers
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
             CheckLogin();
-            
+
             if (s.service.CreateContainer(container))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
-            else
-            {
-                //TODO:  Container not created handling
-                return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
-            }
+            //TODO:  Container not created handling
+            return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
         }
 
         [HttpPost]
@@ -54,14 +50,11 @@ namespace MvcSASE.Controllers
             s = (from i in db.Sase where i.ID == saseid select i).FirstOrDefault();
             s.passID = saseid;
             CheckLogin();
-            
+
             if (s.service.CreateQueue(queue))
                 return RedirectToLocal("/SASEExplorer/Index/" + saseid);
-            else
-            {
-                //TODO:  Container not created handling
-                return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
-            }
+            //TODO:  Container not created handling
+            return RedirectToLocal("/SASEExplorer/InvalidCharacter/" + saseid);
         }
 
         public ActionResult Queue(string queuename, int? saseid)
@@ -127,7 +120,7 @@ namespace MvcSASE.Controllers
                 return View(s);
             }
         }
-                
+
         public ActionResult InvalidCharacter(int? ID)
         {
             if (ID == null)
@@ -146,11 +139,9 @@ namespace MvcSASE.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
+
         private void CheckLogin()
         {
             if (s == null)

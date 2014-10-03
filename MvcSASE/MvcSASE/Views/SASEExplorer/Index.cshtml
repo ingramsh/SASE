@@ -11,20 +11,25 @@
     @for (int i = 0; i < Model.service.BlobContainerNames().Count(); i++)
     {
         <p />
-    <a href="/Blob/Index?containername=@Model.service.BlobContainerNames().ElementAt(i)&saseid=@Model.passID&blobid=-1">@Model.service.BlobContainerNames().ElementAt(i)</a>
-        @(" (");
-        @Model.service.BlobItems(Model.service.BlobContainerNames().ElementAt(i)).Count();
-        @(")  ");
+        <a href="/Blob/Index?containername=@Model.service.BlobContainerNames().ElementAt(i)&saseid=@Model.passID&blobid=-1">@Model.service.BlobContainerNames().ElementAt(i)</a>
+        @(" (")
+        ;
+        @Model.service.BlobItems(Model.service.BlobContainerNames().ElementAt(i)).Count()
+        ;
+        @(")  ")
+        ;
     }
 </form>
 <p />
 @using (Html.BeginForm("CreateContainer",
-                        "SASEExplorer",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
+    "SASEExplorer",
+    FormMethod.Post,
+    new {enctype = "multipart/form-data"}))
 {
     <label for="container">Create new container: </label>
-    <input type="text" name="container" id="container" /><br><br>
+    <input type="text" name="container" id="container" />
+    <br>
+    <br>
     <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
     <input type="submit" value="Create Container" />
 }
@@ -35,19 +40,24 @@
     {
         <p />
         <a href="/SASEExplorer/Queue?queuename=@Model.service.QueueNames().ElementAt(i)&saseid=@Model.passID">@Model.service.QueueNames().ElementAt(i)</a>
-            @(" (");
-            @Model.service.QueueMessageCount(Model.service.QueueNames().ElementAt(i));
-            @(")  ");
+        @(" (")
+        ;
+        @Model.service.QueueMessageCount(Model.service.QueueNames().ElementAt(i))
+        ;
+        @(")  ")
+        ;
     }
 </form>
 <p />
 @using (Html.BeginForm("CreateQueue",
-                        "SASEExplorer",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
+    "SASEExplorer",
+    FormMethod.Post,
+    new {enctype = "multipart/form-data"}))
 {
     <label for="queue">Create new queue: </label>
-    <input type="text" name="queue" id="queue" /><br><br>
+    <input type="text" name="queue" id="queue" />
+    <br>
+    <br>
     <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
     <input type="submit" value="Create Queue" />
 }

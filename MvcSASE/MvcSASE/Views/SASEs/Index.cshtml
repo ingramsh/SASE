@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SASELibrary.AccountService>
+﻿@using SASELibrary
+@model IEnumerable<SASELibrary.AccountService>
 
 @{
     ViewBag.Title = "Index";
@@ -8,18 +9,17 @@
 
 <p />
 @Html.ActionLink("Create New Storage Accont", "Create")
-@foreach (var item in Model)
+@foreach (AccountService item in Model)
 {
     <hr />
     <p>
-    Storage Account Name: <strong>@item.storageAccount</strong> | @Html.ActionLink(" Storage Explore", "Index", "SASEExplorer", new { id = item.ID }, null)
+        Storage Account Name: <strong>@item.storageAccount</strong> | @Html.ActionLink(" Storage Explore", "Index", "SASEExplorer", new {id = item.ID}, null)
     </p>
     <p>
-    @("Key: " + item.storageKey)</p>
+        @("Key: " + item.storageKey)</p>
     <p>
-    @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-    @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-    @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        @Html.ActionLink("Edit", "Edit", new {id = item.ID}) |
+        @Html.ActionLink("Details", "Details", new {id = item.ID}) |
+        @Html.ActionLink("Delete", "Delete", new {id = item.ID})
     </p>
 }
-

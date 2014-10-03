@@ -10,11 +10,11 @@
 <p />
 <p>
     Azure Cloud Services provides the ability to create and design worker roles within the Azure Cloud.  For this demonstration I've created a worker role that will read from a designated queue 
-        inside the user's storage account to retrieve a youtube video address.  Once the worker role has acquired the youtube address it will dequeue the message and goto work.  The desired 
-        outcome of this demonstration is to have the worker role successfully extract a youtube video file and to store it in the user's account as an mp4 file in a designated blob container.  <br /><br />
+    inside the user's storage account to retrieve a youtube video address.  Once the worker role has acquired the youtube address it will dequeue the message and goto work.  The desired 
+    outcome of this demonstration is to have the worker role successfully extract a youtube video file and to store it in the user's account as an mp4 file in a designated blob container.  <br /><br />
     The worker role is not allowed to extract video files from a youtube address that is copyrighted in the US.  Also not all youtube video's are able to be extracted as an mp4 file.  Therefore, 
-        there is the possibility of failure for the worker role.  To demonstrate this success/failure routine there will be an additional output queue designated to receives a completion message from
-        the worker role.  The output message will either state that the file extraction was a success or why the extraction failed.<br /><br />
+    there is the possibility of failure for the worker role.  To demonstrate this success/failure routine there will be an additional output queue designated to receives a completion message from
+    the worker role.  The output message will either state that the file extraction was a success or why the extraction failed.<br /><br />
     Read the instructions below for the procedure to operate this Azure Worker Role demonstration.
 </p>
 <hr />

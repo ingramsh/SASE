@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MvcSASE.Models;
-using Microsoft.AspNet.Identity;
 using SASELibrary;
 
 namespace MvcSASE.Controllers
 {
     public class SASEsController : Controller
     {
-        private DBContext db = new DBContext();
-        string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
+        private readonly string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
+        private readonly DBContext db = new DBContext();
 
         // GET: SASEs
         public ActionResult Index()
@@ -23,8 +17,8 @@ namespace MvcSASE.Controllers
             if (currentUser == "" || currentUser == null)
                 return RedirectToAction("Login", "Account");
 
-            var userEntries = from m in db.Sase
-                              select m;
+            IQueryable<AccountService> userEntries = from m in db.Sase
+                select m;
             userEntries = userEntries.Where(s => s.userEmail.Contains(currentUser));
             return View(userEntries);
             //return View(db.Sase.ToList());
@@ -59,7 +53,7 @@ namespace MvcSASE.Controllers
         {
             if (accountType == "Azure")
             {
-                AzureAccountService sASE = new AzureAccountService()
+                var sASE = new AzureAccountService
                 {
                     storageAccount = storageAccount,
                     storageKey = storageKey,
@@ -71,7 +65,7 @@ namespace MvcSASE.Controllers
             }
             else if (accountType == "AWS")
             {
-                AWSAccountService sASE = new AWSAccountService()
+                var sASE = new AWSAccountService
                 {
                     storageAccount = storageAccount,
                     storageKey = storageKey,
@@ -84,6 +78,7 @@ namespace MvcSASE.Controllers
 
             return RedirectToAction("Index");
         }
+
         /*[ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,userEmail,storageAccount,storageKey")] AzureAccountService sASE)
         {
@@ -160,10 +155,7 @@ namespace MvcSASE.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

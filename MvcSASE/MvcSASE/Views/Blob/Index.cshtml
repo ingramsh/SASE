@@ -13,7 +13,7 @@
         <p>
             @Model.service.BlobItemNames(Model.containerName).ElementAt(i)
             - <a href="/Blob/Index?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName).ElementAt(i)&saseid=@Model.passID&blobid=@i">
-                Inspect</a> |
+                  Inspect</a> |
             <a href="/Blob/Download?containername=@Model.containerName&itemname=@Model.service.BlobItemNames(Model.containerName).ElementAt(i)&saseid=@Model.passID&blobid=@i">
                 Download</a>
         </p>
@@ -30,15 +30,17 @@
 </form>
 <hr />
 @using (Html.BeginForm("Upload",
-                        "Blob",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
+    "Blob",
+    FormMethod.Post,
+    new {enctype = "multipart/form-data"}))
 {
     <label for="file">Upload Blob Item:</label>
-    <input type="file" name="file" id="file" /><br><br>
+    <input type="file" name="file" id="file" />
+    <br>
+    <br>
     <input type="hidden" name="container" id="container" value="@Model.containerName" />
     <input type="hidden" name="saseid" id="saseid" value="@Model.passID" />
     <input type="submit" value="Upload File" />
 }
 <hr />
-<a href="/SASEExplorer/Index/@Model.passID">Back to Explorer</a> 
+<a href="/SASEExplorer/Index/@Model.passID">Back to Explorer</a>

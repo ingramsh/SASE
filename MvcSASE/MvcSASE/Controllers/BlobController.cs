@@ -1,20 +1,17 @@
-﻿using MvcSASE.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
-using System.IO;
 using SASELibrary;
-
 
 namespace MvcSASE.Controllers
 {
     public class BlobController : Controller
     {
+        private readonly string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
+        private readonly DBContext db = new DBContext();
         private AccountService s;
-        private DBContext db = new DBContext();
-        private string currentUser = System.Web.HttpContext.Current.User.Identity.Name;
 
         // GET: Blob
         public ActionResult Index(string containername, int? saseid, int blobid)
@@ -34,7 +31,7 @@ namespace MvcSASE.Controllers
 
             return View(s);
         }
-               
+
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file, string container, int? saseid)
         {
@@ -74,7 +71,7 @@ namespace MvcSASE.Controllers
             string fileName = s.service.BlobItemNames(containername).ElementAt(blobid);
             byte[] file = s.service.DownloadBlobBytes(containername, fileName);
 
-            return File(file, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            return File(file, MediaTypeNames.Application.Octet, fileName);
             //return RedirectToLocal("/Blob/Index?containername=" + s.containerName + "&saseid=" + s.passID + "&blobid=-1");
         }
 
@@ -84,10 +81,7 @@ namespace MvcSASE.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         private void CheckLogin()

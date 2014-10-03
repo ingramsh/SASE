@@ -8,14 +8,14 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     using (Html.BeginForm("Create",
-                        "SASEs",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
+        "SASEs",
+        FormMethod.Post,
+        new {enctype = "multipart/form-data"}))
     {
         <div class="form-horizontal">
             <h4>SASE Storage Account</h4>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="hidden" name="userEmail" id="userEmail" value="@User.Identity.GetUserName().ToString()" />
+                    <input type="hidden" name="userEmail" id="userEmail" value="@User.Identity.GetUserName()" />
                     <input type="submit" value="Create Storage Account" />
                 </div>
             </div>

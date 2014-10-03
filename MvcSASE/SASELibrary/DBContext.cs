@@ -5,7 +5,10 @@ namespace SASELibrary
     public class DBContext : DbContext
     {
         public DBContext()
-            : base("SASEDBContext") { }
+            : base("SASEDBContext")
+        {
+        }
+
         public DbSet<AccountService> Sase { get; set; }
     }
 }

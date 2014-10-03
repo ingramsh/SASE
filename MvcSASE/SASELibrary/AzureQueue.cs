@@ -1,62 +1,64 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Queue;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace SASELibrary
 {
     public class AzureQueue
     {
-        CloudQueueClient queueClient;
-        CloudQueue cloudQueue;
-        Exception last;
-        private List<CloudQueue> queueList = new List<CloudQueue>();
+        private readonly CloudQueueClient _queueClient;
+        private readonly List<CloudQueue> _queueList = new List<CloudQueue>();
+        private CloudQueue _cloudQueue;
 
         // Intended Constructor
         public AzureQueue(CloudStorageAccount account)
         {
-            queueClient = account.CreateCloudQueueClient();
+            _queueClient = account.CreateCloudQueueClient();
 
-            IEnumerable<CloudQueue> cloudQueues = queueClient.ListQueues();
+            IEnumerable<CloudQueue> cloudQueues = _queueClient.ListQueues();
             foreach (CloudQueue cloudQueue in cloudQueues)
             {
-                queueList.Add(cloudQueue);
+                _queueList.Add(cloudQueue);
             }
         }
-        public AzureQueue() { }
+
+        public AzureQueue()
+        {
+        }
 
         // Returns a list of queues named within the storage account
         public IEnumerable<string> GetQueueNames()
         {
-            return queueList.Select(q => q.Name);
+            return _queueList.Select(q => q.Name);
         }
 
         // Returns the queue's message count
         public int GetMessageCount(string name)
         {
-            int? count = null;
+            int? count;
 
-            cloudQueue = queueClient.GetQueueReference(name);
-            cloudQueue.FetchAttributes();
-            count = cloudQueue.ApproximateMessageCount;
+            _cloudQueue = _queueClient.GetQueueReference(name);
+            _cloudQueue.FetchAttributes();
+            count = _cloudQueue.ApproximateMessageCount;
 
             if (count != null)
-                return (int)cloudQueue.ApproximateMessageCount;
-            else
-                return 0;
+                if (_cloudQueue.ApproximateMessageCount != null) return (int) _cloudQueue.ApproximateMessageCount;
+            return 0;
         }
 
         // Create a new storage queue
         public bool CreateQueue(string name)
         {
-            bool created = false;
+            bool created;
 
-            cloudQueue = queueClient.GetQueueReference(name);
-            created = cloudQueue.CreateIfNotExists();
+            _cloudQueue = _queueClient.GetQueueReference(name);
+            created = _cloudQueue.CreateIfNotExists();
 
             if (created)
-                queueList.Add(cloudQueue);
+                _queueList.Add(_cloudQueue);
 
             return created;
         }
@@ -64,15 +66,14 @@ namespace SASELibrary
         // Enqueue a message to queue
         public bool EnqueueMessage(string name, string message)
         {
-            CloudQueueMessage queueMessage = new CloudQueueMessage(message);
-            cloudQueue = queueClient.GetQueueReference(name);
+            var queueMessage = new CloudQueueMessage(message);
+            _cloudQueue = _queueClient.GetQueueReference(name);
             try
             {
-                cloudQueue.AddMessage(queueMessage);
+                _cloudQueue.AddMessage(queueMessage);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                last = e;
                 return false;
             }
 
@@ -84,25 +85,24 @@ namespace SASELibrary
         {
             string message;
 
-            cloudQueue = queueClient.GetQueueReference(name);
-            CloudQueueMessage getMessage = cloudQueue.GetMessage();
+            _cloudQueue = _queueClient.GetQueueReference(name);
+            CloudQueueMessage getMessage = _cloudQueue.GetMessage();
 
             message = getMessage.AsString;
-            cloudQueue.DeleteMessage(getMessage);
-            
+            _cloudQueue.DeleteMessage(getMessage);
+
             return message;
         }
 
         // Peek a message from the front of queue
         public Message PeekMessage(string name)
         {
-            cloudQueue = queueClient.GetQueueReference(name);
-            CloudQueueMessage peekMessage = cloudQueue.PeekMessage();
-            return new Message()
+            _cloudQueue = _queueClient.GetQueueReference(name);
+            CloudQueueMessage peekMessage = _cloudQueue.PeekMessage();
+            return new Message
             {
                 MessageString = peekMessage.AsString,
-                DequeueCount = peekMessage.DequeueCount.ToString(),
-
+                DequeueCount = peekMessage.DequeueCount.ToString(CultureInfo.InvariantCulture),
                 InsertionTime = peekMessage.InsertionTime.ToString(),
                 ExpirationTime = peekMessage.ExpirationTime.ToString(),
                 NextVisibleTime = peekMessage.NextVisibleTime.ToString()

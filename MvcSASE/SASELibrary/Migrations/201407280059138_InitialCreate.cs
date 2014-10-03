@@ -1,8 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SASELibrary.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class InitialCreate : DbMigration
     {
         public override void Up()
@@ -10,17 +9,16 @@ namespace SASELibrary.Migrations
             CreateTable(
                 "dbo.AccountServices",
                 c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        storageAccount = c.String(),
-                        storageKey = c.String(),
-                        userEmail = c.String(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
+                {
+                    ID = c.Int(false, true),
+                    storageAccount = c.String(),
+                    storageKey = c.String(),
+                    userEmail = c.String(),
+                    Discriminator = c.String(false, 128),
+                })
                 .PrimaryKey(t => t.ID);
-            
         }
-        
+
         public override void Down()
         {
             DropTable("dbo.AccountServices");

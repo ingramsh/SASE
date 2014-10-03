@@ -1,50 +1,53 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace SASELibrary
 {
     public class AzureBlob
     {
-        private CloudBlobClient blobClient;        
-        private CloudBlobContainer blobContainer;
-        private Uri endpoint;
-        private List<CloudBlobContainer> containerList = new List<CloudBlobContainer>();
+        private readonly CloudBlobClient _blobClient;
+        private readonly List<CloudBlobContainer> _containerList = new List<CloudBlobContainer>();
+        private CloudBlobContainer _blobContainer;
 
         // Intended Constructor
         public AzureBlob(CloudStorageAccount account)
         {
-            endpoint = account.BlobEndpoint;
-            blobClient = new CloudBlobClient(endpoint, account.Credentials);
+            Uri endpoint = account.BlobEndpoint;
+            _blobClient = new CloudBlobClient(endpoint, account.Credentials);
             //blobClient = account.CreateCloudBlobClient();
 
-            IEnumerable<CloudBlobContainer> blobContainers = blobClient.ListContainers();
+            IEnumerable<CloudBlobContainer> blobContainers = _blobClient.ListContainers();
             foreach (CloudBlobContainer blobContainer in blobContainers)
             {
-                containerList.Add(blobContainer);
+                _containerList.Add(blobContainer);
             }
         }
-        public AzureBlob() { }
+
+        public AzureBlob()
+        {
+        }
 
         // Returns a list of container names within the storage account
         public IEnumerable<string> GetContainerNames()
         {
-            return containerList.Select(t => t.Name);
+            return _containerList.Select(t => t.Name);
         }
 
         // Returns a list of blob items via their URI
         public IEnumerable<string> GetBlobItemNames(string container)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            blobContainer.CreateIfNotExists();
+            _blobContainer = _blobClient.GetContainerReference(container);
+            _blobContainer.CreateIfNotExists();
 
-            IEnumerable<IListBlobItem> blobItems = blobContainer.ListBlobs();
+            IEnumerable<IListBlobItem> blobItems = _blobContainer.ListBlobs();
             foreach (IListBlobItem blobItem in blobItems)
             {
-                string fix = blobItem.Uri.AbsolutePath.ToString();
+                string fix = blobItem.Uri.AbsolutePath;
                 fix = fix.Replace("%20", " ");
                 yield return fix.Replace("%22", "\"");
             }
@@ -53,13 +56,11 @@ namespace SASELibrary
         // Creates a new container with reference 'name'
         public bool CreateContainer(string name)
         {
-            bool created = false;
-
-            blobContainer = blobClient.GetContainerReference(name);
-            created = blobContainer.CreateIfNotExists();
+            _blobContainer = _blobClient.GetContainerReference(name);
+            bool created = _blobContainer.CreateIfNotExists();
 
             if (created)
-                containerList.Add(blobContainer);
+                _containerList.Add(_blobContainer);
 
             return created;
         }
@@ -67,17 +68,17 @@ namespace SASELibrary
         // Creates a new blob block from a file on user's computer
         public void UploadBlockBlob(string container, string name, string filepath)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(name);
 
-            blob.UploadFromFile(filepath, System.IO.FileMode.Open);
+            blob.UploadFromFile(filepath, FileMode.Open);
         }
 
         // Create a new blob block from a byte array
         public void UploadBlockBlobBytes(string container, string name, byte[] file)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(name);
 
             blob.UploadFromByteArray(file, 0, file.Count());
         }
@@ -85,8 +86,8 @@ namespace SASELibrary
         // Create a new blob block from a file stream
         public void UploadBlockBlobStream(string container, string name, Stream file)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(name);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(name);
 
             blob.UploadFromStream(file);
         }
@@ -94,13 +95,13 @@ namespace SASELibrary
         // Retrieve a blob item's byte code
         public byte[] GetBlobBytes(string container, string item)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(item);
             blob.FetchAttributes();
 
             long fileByteLength = blob.Properties.Length;
-            byte[] fileContent = new byte[fileByteLength];
-            
+            var fileContent = new byte[fileByteLength];
+
             for (int i = 0; i < fileByteLength; i++)
                 fileContent[i] = 0x20;
 
@@ -112,10 +113,10 @@ namespace SASELibrary
         // Download a blob item to specified file path
         public void DownloadBlobItem(string container, string item, string filepath)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(item);
 
-            blob.DownloadToFile(filepath, System.IO.FileMode.CreateNew);
+            blob.DownloadToFile(filepath, FileMode.CreateNew);
         }
 
         // Download a blob item as a Stream
@@ -123,8 +124,8 @@ namespace SASELibrary
         {
             Stream s = new MemoryStream();
 
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(item);
 
             blob.DownloadToStream(s);
             s.Position = 0;
@@ -134,15 +135,15 @@ namespace SASELibrary
 
         public BlobInfo BlobInfo(string container, string item)
         {
-            blobContainer = blobClient.GetContainerReference(container);
-            CloudBlockBlob blob = blobContainer.GetBlockBlobReference(item);
+            _blobContainer = _blobClient.GetContainerReference(container);
+            CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(item);
 
             blob.FetchAttributes();
 
-            BlobInfo blobinfo = new BlobInfo()
+            var blobinfo = new BlobInfo
             {
                 BlobType = blob.Properties.BlobType.ToString(),
-                Length = blob.Properties.Length.ToString(),
+                Length = blob.Properties.Length.ToString(CultureInfo.InvariantCulture),
                 LastModified = blob.Properties.LastModified.ToString(),
                 BlobLocation = blob.Uri.ToString()
             };
@@ -150,6 +151,7 @@ namespace SASELibrary
             return blobinfo;
         }
     }
+
     public class BlobInfo
     {
         public string BlobType { get; set; }
